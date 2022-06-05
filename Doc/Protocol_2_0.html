@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <title>&Pcy;&rcy;&ocy;&tcy;&ocy;&kcy;&ocy;&lcy; &vcy;&zcy;&acy;&icy;&mcy;&ocy;&dcy;&iecy;&jcy;&scy;&tcy;&vcy;&icy;&yacy; &ucy;&rcy;&ocy;&vcy;&ncy;&iecy;&jcy; &scy;&icy;&scy;&tcy;&iecy;&mcy;&ycy; &lpar;&vcy;&iecy;&rcy;&khcy;&ncy;&icy;&jcy;&comma; &ncy;&icy;&zhcy;&ncy;&icy;&jcy;&rpar;&period; &Ocy;&pcy;&icy;&scy;&acy;&ncy;&icy;&iecy; &scy;&tcy;&rcy;&ucy;&kcy;&tcy;&ucy;&rcy;&ycy;&period;</title>
+        <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+
+/* From extension vscode.markdown-math */
+@font-face{font-family:KaTeX_AMS;font-style:normal;font-weight:400;src:url(fonts/KaTeX_AMS-Regular.woff2) format("woff2"),url(fonts/KaTeX_AMS-Regular.woff) format("woff"),url(fonts/KaTeX_AMS-Regular.ttf) format("truetype")}@font-face{font-family:KaTeX_Caligraphic;font-style:normal;font-weight:700;src:url(fonts/KaTeX_Caligraphic-Bold.woff2) format("woff2"),url(fonts/KaTeX_Caligraphic-Bold.woff) format("woff"),url(fonts/KaTeX_Caligraphic-Bold.ttf) format("truetype")}@font-face{font-family:KaTeX_Caligraphic;font-style:normal;font-weight:400;src:url(fonts/KaTeX_Caligraphic-Regular.woff2) format("woff2"),url(fonts/KaTeX_Caligraphic-Regular.woff) format("woff"),url(fonts/KaTeX_Caligraphic-Regular.ttf) format("truetype")}@font-face{font-family:KaTeX_Fraktur;font-style:normal;font-weight:700;src:url(fonts/KaTeX_Fraktur-Bold.woff2) format("woff2"),url(fonts/KaTeX_Fraktur-Bold.woff) format("woff"),url(fonts/KaTeX_Fraktur-Bold.ttf) format("truetype")}@font-face{font-family:KaTeX_Fraktur;font-style:normal;font-weight:400;src:url(fonts/KaTeX_Fraktur-Regular.woff2) format("woff2"),url(fonts/KaTeX_Fraktur-Regular.woff) format("woff"),url(fonts/KaTeX_Fraktur-Regular.ttf) format("truetype")}@font-face{font-family:KaTeX_Main;font-style:normal;font-weight:700;src:url(fonts/KaTeX_Main-Bold.woff2) format("woff2"),url(fonts/KaTeX_Main-Bold.woff) format("woff"),url(fonts/KaTeX_Main-Bold.ttf) format("truetype")}@font-face{font-family:KaTeX_Main;font-style:italic;font-weight:700;src:url(fonts/KaTeX_Main-BoldItalic.woff2) format("woff2"),url(fonts/KaTeX_Main-BoldItalic.woff) format("woff"),url(fonts/KaTeX_Main-BoldItalic.ttf) format("truetype")}@font-face{font-family:KaTeX_Main;font-style:italic;font-weight:400;src:url(fonts/KaTeX_Main-Italic.woff2) format("woff2"),url(fonts/KaTeX_Main-Italic.woff) format("woff"),url(fonts/KaTeX_Main-Italic.ttf) format("truetype")}@font-face{font-family:KaTeX_Main;font-style:normal;font-weight:400;src:url(fonts/KaTeX_Main-Regular.woff2) format("woff2"),url(fonts/KaTeX_Main-Regular.woff) format("woff"),url(fonts/KaTeX_Main-Regular.ttf) format("truetype")}@font-face{font-family:KaTeX_Math;font-style:italic;font-weight:700;src:url(fonts/KaTeX_Math-BoldItalic.woff2) format("woff2"),url(fonts/KaTeX_Math-BoldItalic.woff) format("woff"),url(fonts/KaTeX_Math-BoldItalic.ttf) format("truetype")}@font-face{font-family:KaTeX_Math;font-style:italic;font-weight:400;src:url(fonts/KaTeX_Math-Italic.woff2) format("woff2"),url(fonts/KaTeX_Math-Italic.woff) format("woff"),url(fonts/KaTeX_Math-Italic.ttf) format("truetype")}@font-face{font-family:"KaTeX_SansSerif";font-style:normal;font-weight:700;src:url(fonts/KaTeX_SansSerif-Bold.woff2) format("woff2"),url(fonts/KaTeX_SansSerif-Bold.woff) format("woff"),url(fonts/KaTeX_SansSerif-Bold.ttf) format("truetype")}@font-face{font-family:"KaTeX_SansSerif";font-style:italic;font-weight:400;src:url(fonts/KaTeX_SansSerif-Italic.woff2) format("woff2"),url(fonts/KaTeX_SansSerif-Italic.woff) format("woff"),url(fonts/KaTeX_SansSerif-Italic.ttf) format("truetype")}@font-face{font-family:"KaTeX_SansSerif";font-style:normal;font-weight:400;src:url(fonts/KaTeX_SansSerif-Regular.woff2) format("woff2"),url(fonts/KaTeX_SansSerif-Regular.woff) format("woff"),url(fonts/KaTeX_SansSerif-Regular.ttf) format("truetype")}@font-face{font-family:KaTeX_Script;font-style:normal;font-weight:400;src:url(fonts/KaTeX_Script-Regular.woff2) format("woff2"),url(fonts/KaTeX_Script-Regular.woff) format("woff"),url(fonts/KaTeX_Script-Regular.ttf) format("truetype")}@font-face{font-family:KaTeX_Size1;font-style:normal;font-weight:400;src:url(fonts/KaTeX_Size1-Regular.woff2) format("woff2"),url(fonts/KaTeX_Size1-Regular.woff) format("woff"),url(fonts/KaTeX_Size1-Regular.ttf) format("truetype")}@font-face{font-family:KaTeX_Size2;font-style:normal;font-weight:400;src:url(fonts/KaTeX_Size2-Regular.woff2) format("woff2"),url(fonts/KaTeX_Size2-Regular.woff) format("woff"),url(fonts/KaTeX_Size2-Regular.ttf) format("truetype")}@font-face{font-family:KaTeX_Size3;font-style:normal;font-weight:400;src:url(fonts/KaTeX_Size3-Regular.woff2) format("woff2"),url(fonts/KaTeX_Size3-Regular.woff) format("woff"),url(fonts/KaTeX_Size3-Regular.ttf) format("truetype")}@font-face{font-family:KaTeX_Size4;font-style:normal;font-weight:400;src:url(fonts/KaTeX_Size4-Regular.woff2) format("woff2"),url(fonts/KaTeX_Size4-Regular.woff) format("woff"),url(fonts/KaTeX_Size4-Regular.ttf) format("truetype")}@font-face{font-family:KaTeX_Typewriter;font-style:normal;font-weight:400;src:url(fonts/KaTeX_Typewriter-Regular.woff2) format("woff2"),url(fonts/KaTeX_Typewriter-Regular.woff) format("woff"),url(fonts/KaTeX_Typewriter-Regular.ttf) format("truetype")}.katex{text-rendering:auto;font:normal 1.21em KaTeX_Main,Times New Roman,serif;line-height:1.2;text-indent:0}.katex *{-ms-high-contrast-adjust:none!important;border-color:currentColor}.katex .katex-version:after{content:"0.13.24"}.katex .katex-mathml{clip:rect(1px,1px,1px,1px);border:0;height:1px;overflow:hidden;padding:0;position:absolute;width:1px}.katex .katex-html>.newline{display:block}.katex .base{position:relative;white-space:nowrap;width:-webkit-min-content;width:-moz-min-content;width:min-content}.katex .base,.katex .strut{display:inline-block}.katex .textbf{font-weight:700}.katex .textit{font-style:italic}.katex .textrm{font-family:KaTeX_Main}.katex .textsf{font-family:KaTeX_SansSerif}.katex .texttt{font-family:KaTeX_Typewriter}.katex .mathnormal{font-family:KaTeX_Math;font-style:italic}.katex .mathit{font-family:KaTeX_Main;font-style:italic}.katex .mathrm{font-style:normal}.katex .mathbf{font-family:KaTeX_Main;font-weight:700}.katex .boldsymbol{font-family:KaTeX_Math;font-style:italic;font-weight:700}.katex .amsrm,.katex .mathbb,.katex .textbb{font-family:KaTeX_AMS}.katex .mathcal{font-family:KaTeX_Caligraphic}.katex .mathfrak,.katex .textfrak{font-family:KaTeX_Fraktur}.katex .mathtt{font-family:KaTeX_Typewriter}.katex .mathscr,.katex .textscr{font-family:KaTeX_Script}.katex .mathsf,.katex .textsf{font-family:KaTeX_SansSerif}.katex .mathboldsf,.katex .textboldsf{font-family:KaTeX_SansSerif;font-weight:700}.katex .mathitsf,.katex .textitsf{font-family:KaTeX_SansSerif;font-style:italic}.katex .mainrm{font-family:KaTeX_Main;font-style:normal}.katex .vlist-t{border-collapse:collapse;display:inline-table;table-layout:fixed}.katex .vlist-r{display:table-row}.katex .vlist{display:table-cell;position:relative;vertical-align:bottom}.katex .vlist>span{display:block;height:0;position:relative}.katex .vlist>span>span{display:inline-block}.katex .vlist>span>.pstrut{overflow:hidden;width:0}.katex .vlist-t2{margin-right:-2px}.katex .vlist-s{display:table-cell;font-size:1px;min-width:2px;vertical-align:bottom;width:2px}.katex .vbox{align-items:baseline;display:inline-flex;flex-direction:column}.katex .hbox{width:100%}.katex .hbox,.katex .thinbox{display:inline-flex;flex-direction:row}.katex .thinbox{max-width:0;width:0}.katex .msupsub{text-align:left}.katex .mfrac>span>span{text-align:center}.katex .mfrac .frac-line{border-bottom-style:solid;display:inline-block;width:100%}.katex .hdashline,.katex .hline,.katex .mfrac .frac-line,.katex .overline .overline-line,.katex .rule,.katex .underline .underline-line{min-height:1px}.katex .mspace{display:inline-block}.katex .clap,.katex .llap,.katex .rlap{position:relative;width:0}.katex .clap>.inner,.katex .llap>.inner,.katex .rlap>.inner{position:absolute}.katex .clap>.fix,.katex .llap>.fix,.katex .rlap>.fix{display:inline-block}.katex .llap>.inner{right:0}.katex .clap>.inner,.katex .rlap>.inner{left:0}.katex .clap>.inner>span{margin-left:-50%;margin-right:50%}.katex .rule{border:0 solid;display:inline-block;position:relative}.katex .hline,.katex .overline .overline-line,.katex .underline .underline-line{border-bottom-style:solid;display:inline-block;width:100%}.katex .hdashline{border-bottom-style:dashed;display:inline-block;width:100%}.katex .sqrt>.root{margin-left:.27777778em;margin-right:-.55555556em}.katex .fontsize-ensurer.reset-size1.size1,.katex .sizing.reset-size1.size1{font-size:1em}.katex .fontsize-ensurer.reset-size1.size2,.katex .sizing.reset-size1.size2{font-size:1.2em}.katex .fontsize-ensurer.reset-size1.size3,.katex .sizing.reset-size1.size3{font-size:1.4em}.katex .fontsize-ensurer.reset-size1.size4,.katex .sizing.reset-size1.size4{font-size:1.6em}.katex .fontsize-ensurer.reset-size1.size5,.katex .sizing.reset-size1.size5{font-size:1.8em}.katex .fontsize-ensurer.reset-size1.size6,.katex .sizing.reset-size1.size6{font-size:2em}.katex .fontsize-ensurer.reset-size1.size7,.katex .sizing.reset-size1.size7{font-size:2.4em}.katex .fontsize-ensurer.reset-size1.size8,.katex .sizing.reset-size1.size8{font-size:2.88em}.katex .fontsize-ensurer.reset-size1.size9,.katex .sizing.reset-size1.size9{font-size:3.456em}.katex .fontsize-ensurer.reset-size1.size10,.katex .sizing.reset-size1.size10{font-size:4.148em}.katex .fontsize-ensurer.reset-size1.size11,.katex .sizing.reset-size1.size11{font-size:4.976em}.katex .fontsize-ensurer.reset-size2.size1,.katex .sizing.reset-size2.size1{font-size:.83333333em}.katex .fontsize-ensurer.reset-size2.size2,.katex .sizing.reset-size2.size2{font-size:1em}.katex .fontsize-ensurer.reset-size2.size3,.katex .sizing.reset-size2.size3{font-size:1.16666667em}.katex .fontsize-ensurer.reset-size2.size4,.katex .sizing.reset-size2.size4{font-size:1.33333333em}.katex .fontsize-ensurer.reset-size2.size5,.katex .sizing.reset-size2.size5{font-size:1.5em}.katex .fontsize-ensurer.reset-size2.size6,.katex .sizing.reset-size2.size6{font-size:1.66666667em}.katex .fontsize-ensurer.reset-size2.size7,.katex .sizing.reset-size2.size7{font-size:2em}.katex .fontsize-ensurer.reset-size2.size8,.katex .sizing.reset-size2.size8{font-size:2.4em}.katex .fontsize-ensurer.reset-size2.size9,.katex .sizing.reset-size2.size9{font-size:2.88em}.katex .fontsize-ensurer.reset-size2.size10,.katex .sizing.reset-size2.size10{font-size:3.45666667em}.katex .fontsize-ensurer.reset-size2.size11,.katex .sizing.reset-size2.size11{font-size:4.14666667em}.katex .fontsize-ensurer.reset-size3.size1,.katex .sizing.reset-size3.size1{font-size:.71428571em}.katex .fontsize-ensurer.reset-size3.size2,.katex .sizing.reset-size3.size2{font-size:.85714286em}.katex .fontsize-ensurer.reset-size3.size3,.katex .sizing.reset-size3.size3{font-size:1em}.katex .fontsize-ensurer.reset-size3.size4,.katex .sizing.reset-size3.size4{font-size:1.14285714em}.katex .fontsize-ensurer.reset-size3.size5,.katex .sizing.reset-size3.size5{font-size:1.28571429em}.katex .fontsize-ensurer.reset-size3.size6,.katex .sizing.reset-size3.size6{font-size:1.42857143em}.katex .fontsize-ensurer.reset-size3.size7,.katex .sizing.reset-size3.size7{font-size:1.71428571em}.katex .fontsize-ensurer.reset-size3.size8,.katex .sizing.reset-size3.size8{font-size:2.05714286em}.katex .fontsize-ensurer.reset-size3.size9,.katex .sizing.reset-size3.size9{font-size:2.46857143em}.katex .fontsize-ensurer.reset-size3.size10,.katex .sizing.reset-size3.size10{font-size:2.96285714em}.katex .fontsize-ensurer.reset-size3.size11,.katex .sizing.reset-size3.size11{font-size:3.55428571em}.katex .fontsize-ensurer.reset-size4.size1,.katex .sizing.reset-size4.size1{font-size:.625em}.katex .fontsize-ensurer.reset-size4.size2,.katex .sizing.reset-size4.size2{font-size:.75em}.katex .fontsize-ensurer.reset-size4.size3,.katex .sizing.reset-size4.size3{font-size:.875em}.katex .fontsize-ensurer.reset-size4.size4,.katex .sizing.reset-size4.size4{font-size:1em}.katex .fontsize-ensurer.reset-size4.size5,.katex .sizing.reset-size4.size5{font-size:1.125em}.katex .fontsize-ensurer.reset-size4.size6,.katex .sizing.reset-size4.size6{font-size:1.25em}.katex .fontsize-ensurer.reset-size4.size7,.katex .sizing.reset-size4.size7{font-size:1.5em}.katex .fontsize-ensurer.reset-size4.size8,.katex .sizing.reset-size4.size8{font-size:1.8em}.katex .fontsize-ensurer.reset-size4.size9,.katex .sizing.reset-size4.size9{font-size:2.16em}.katex .fontsize-ensurer.reset-size4.size10,.katex .sizing.reset-size4.size10{font-size:2.5925em}.katex .fontsize-ensurer.reset-size4.size11,.katex .sizing.reset-size4.size11{font-size:3.11em}.katex .fontsize-ensurer.reset-size5.size1,.katex .sizing.reset-size5.size1{font-size:.55555556em}.katex .fontsize-ensurer.reset-size5.size2,.katex .sizing.reset-size5.size2{font-size:.66666667em}.katex .fontsize-ensurer.reset-size5.size3,.katex .sizing.reset-size5.size3{font-size:.77777778em}.katex .fontsize-ensurer.reset-size5.size4,.katex .sizing.reset-size5.size4{font-size:.88888889em}.katex .fontsize-ensurer.reset-size5.size5,.katex .sizing.reset-size5.size5{font-size:1em}.katex .fontsize-ensurer.reset-size5.size6,.katex .sizing.reset-size5.size6{font-size:1.11111111em}.katex .fontsize-ensurer.reset-size5.size7,.katex .sizing.reset-size5.size7{font-size:1.33333333em}.katex .fontsize-ensurer.reset-size5.size8,.katex .sizing.reset-size5.size8{font-size:1.6em}.katex .fontsize-ensurer.reset-size5.size9,.katex .sizing.reset-size5.size9{font-size:1.92em}.katex .fontsize-ensurer.reset-size5.size10,.katex .sizing.reset-size5.size10{font-size:2.30444444em}.katex .fontsize-ensurer.reset-size5.size11,.katex .sizing.reset-size5.size11{font-size:2.76444444em}.katex .fontsize-ensurer.reset-size6.size1,.katex .sizing.reset-size6.size1{font-size:.5em}.katex .fontsize-ensurer.reset-size6.size2,.katex .sizing.reset-size6.size2{font-size:.6em}.katex .fontsize-ensurer.reset-size6.size3,.katex .sizing.reset-size6.size3{font-size:.7em}.katex .fontsize-ensurer.reset-size6.size4,.katex .sizing.reset-size6.size4{font-size:.8em}.katex .fontsize-ensurer.reset-size6.size5,.katex .sizing.reset-size6.size5{font-size:.9em}.katex .fontsize-ensurer.reset-size6.size6,.katex .sizing.reset-size6.size6{font-size:1em}.katex .fontsize-ensurer.reset-size6.size7,.katex .sizing.reset-size6.size7{font-size:1.2em}.katex .fontsize-ensurer.reset-size6.size8,.katex .sizing.reset-size6.size8{font-size:1.44em}.katex .fontsize-ensurer.reset-size6.size9,.katex .sizing.reset-size6.size9{font-size:1.728em}.katex .fontsize-ensurer.reset-size6.size10,.katex .sizing.reset-size6.size10{font-size:2.074em}.katex .fontsize-ensurer.reset-size6.size11,.katex .sizing.reset-size6.size11{font-size:2.488em}.katex .fontsize-ensurer.reset-size7.size1,.katex .sizing.reset-size7.size1{font-size:.41666667em}.katex .fontsize-ensurer.reset-size7.size2,.katex .sizing.reset-size7.size2{font-size:.5em}.katex .fontsize-ensurer.reset-size7.size3,.katex .sizing.reset-size7.size3{font-size:.58333333em}.katex .fontsize-ensurer.reset-size7.size4,.katex .sizing.reset-size7.size4{font-size:.66666667em}.katex .fontsize-ensurer.reset-size7.size5,.katex .sizing.reset-size7.size5{font-size:.75em}.katex .fontsize-ensurer.reset-size7.size6,.katex .sizing.reset-size7.size6{font-size:.83333333em}.katex .fontsize-ensurer.reset-size7.size7,.katex .sizing.reset-size7.size7{font-size:1em}.katex .fontsize-ensurer.reset-size7.size8,.katex .sizing.reset-size7.size8{font-size:1.2em}.katex .fontsize-ensurer.reset-size7.size9,.katex .sizing.reset-size7.size9{font-size:1.44em}.katex .fontsize-ensurer.reset-size7.size10,.katex .sizing.reset-size7.size10{font-size:1.72833333em}.katex .fontsize-ensurer.reset-size7.size11,.katex .sizing.reset-size7.size11{font-size:2.07333333em}.katex .fontsize-ensurer.reset-size8.size1,.katex .sizing.reset-size8.size1{font-size:.34722222em}.katex .fontsize-ensurer.reset-size8.size2,.katex .sizing.reset-size8.size2{font-size:.41666667em}.katex .fontsize-ensurer.reset-size8.size3,.katex .sizing.reset-size8.size3{font-size:.48611111em}.katex .fontsize-ensurer.reset-size8.size4,.katex .sizing.reset-size8.size4{font-size:.55555556em}.katex .fontsize-ensurer.reset-size8.size5,.katex .sizing.reset-size8.size5{font-size:.625em}.katex .fontsize-ensurer.reset-size8.size6,.katex .sizing.reset-size8.size6{font-size:.69444444em}.katex .fontsize-ensurer.reset-size8.size7,.katex .sizing.reset-size8.size7{font-size:.83333333em}.katex .fontsize-ensurer.reset-size8.size8,.katex .sizing.reset-size8.size8{font-size:1em}.katex .fontsize-ensurer.reset-size8.size9,.katex .sizing.reset-size8.size9{font-size:1.2em}.katex .fontsize-ensurer.reset-size8.size10,.katex .sizing.reset-size8.size10{font-size:1.44027778em}.katex .fontsize-ensurer.reset-size8.size11,.katex .sizing.reset-size8.size11{font-size:1.72777778em}.katex .fontsize-ensurer.reset-size9.size1,.katex .sizing.reset-size9.size1{font-size:.28935185em}.katex .fontsize-ensurer.reset-size9.size2,.katex .sizing.reset-size9.size2{font-size:.34722222em}.katex .fontsize-ensurer.reset-size9.size3,.katex .sizing.reset-size9.size3{font-size:.40509259em}.katex .fontsize-ensurer.reset-size9.size4,.katex .sizing.reset-size9.size4{font-size:.46296296em}.katex .fontsize-ensurer.reset-size9.size5,.katex .sizing.reset-size9.size5{font-size:.52083333em}.katex .fontsize-ensurer.reset-size9.size6,.katex .sizing.reset-size9.size6{font-size:.5787037em}.katex .fontsize-ensurer.reset-size9.size7,.katex .sizing.reset-size9.size7{font-size:.69444444em}.katex .fontsize-ensurer.reset-size9.size8,.katex .sizing.reset-size9.size8{font-size:.83333333em}.katex .fontsize-ensurer.reset-size9.size9,.katex .sizing.reset-size9.size9{font-size:1em}.katex .fontsize-ensurer.reset-size9.size10,.katex .sizing.reset-size9.size10{font-size:1.20023148em}.katex .fontsize-ensurer.reset-size9.size11,.katex .sizing.reset-size9.size11{font-size:1.43981481em}.katex .fontsize-ensurer.reset-size10.size1,.katex .sizing.reset-size10.size1{font-size:.24108004em}.katex .fontsize-ensurer.reset-size10.size2,.katex .sizing.reset-size10.size2{font-size:.28929605em}.katex .fontsize-ensurer.reset-size10.size3,.katex .sizing.reset-size10.size3{font-size:.33751205em}.katex .fontsize-ensurer.reset-size10.size4,.katex .sizing.reset-size10.size4{font-size:.38572806em}.katex .fontsize-ensurer.reset-size10.size5,.katex .sizing.reset-size10.size5{font-size:.43394407em}.katex .fontsize-ensurer.reset-size10.size6,.katex .sizing.reset-size10.size6{font-size:.48216008em}.katex .fontsize-ensurer.reset-size10.size7,.katex .sizing.reset-size10.size7{font-size:.57859209em}.katex .fontsize-ensurer.reset-size10.size8,.katex .sizing.reset-size10.size8{font-size:.69431051em}.katex .fontsize-ensurer.reset-size10.size9,.katex .sizing.reset-size10.size9{font-size:.83317261em}.katex .fontsize-ensurer.reset-size10.size10,.katex .sizing.reset-size10.size10{font-size:1em}.katex .fontsize-ensurer.reset-size10.size11,.katex .sizing.reset-size10.size11{font-size:1.19961427em}.katex .fontsize-ensurer.reset-size11.size1,.katex .sizing.reset-size11.size1{font-size:.20096463em}.katex .fontsize-ensurer.reset-size11.size2,.katex .sizing.reset-size11.size2{font-size:.24115756em}.katex .fontsize-ensurer.reset-size11.size3,.katex .sizing.reset-size11.size3{font-size:.28135048em}.katex .fontsize-ensurer.reset-size11.size4,.katex .sizing.reset-size11.size4{font-size:.32154341em}.katex .fontsize-ensurer.reset-size11.size5,.katex .sizing.reset-size11.size5{font-size:.36173633em}.katex .fontsize-ensurer.reset-size11.size6,.katex .sizing.reset-size11.size6{font-size:.40192926em}.katex .fontsize-ensurer.reset-size11.size7,.katex .sizing.reset-size11.size7{font-size:.48231511em}.katex .fontsize-ensurer.reset-size11.size8,.katex .sizing.reset-size11.size8{font-size:.57877814em}.katex .fontsize-ensurer.reset-size11.size9,.katex .sizing.reset-size11.size9{font-size:.69453376em}.katex .fontsize-ensurer.reset-size11.size10,.katex .sizing.reset-size11.size10{font-size:.83360129em}.katex .fontsize-ensurer.reset-size11.size11,.katex .sizing.reset-size11.size11{font-size:1em}.katex .delimsizing.size1{font-family:KaTeX_Size1}.katex .delimsizing.size2{font-family:KaTeX_Size2}.katex .delimsizing.size3{font-family:KaTeX_Size3}.katex .delimsizing.size4{font-family:KaTeX_Size4}.katex .delimsizing.mult .delim-size1>span{font-family:KaTeX_Size1}.katex .delimsizing.mult .delim-size4>span{font-family:KaTeX_Size4}.katex .nulldelimiter{display:inline-block;width:.12em}.katex .delimcenter,.katex .op-symbol{position:relative}.katex .op-symbol.small-op{font-family:KaTeX_Size1}.katex .op-symbol.large-op{font-family:KaTeX_Size2}.katex .accent>.vlist-t,.katex .op-limits>.vlist-t{text-align:center}.katex .accent .accent-body{position:relative}.katex .accent .accent-body:not(.accent-full){width:0}.katex .overlay{display:block}.katex .mtable .vertical-separator{display:inline-block;min-width:1px}.katex .mtable .arraycolsep{display:inline-block}.katex .mtable .col-align-c>.vlist-t{text-align:center}.katex .mtable .col-align-l>.vlist-t{text-align:left}.katex .mtable .col-align-r>.vlist-t{text-align:right}.katex .svg-align{text-align:left}.katex svg{fill:currentColor;stroke:currentColor;fill-rule:nonzero;fill-opacity:1;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;display:block;height:inherit;position:absolute;width:100%}.katex svg path{stroke:none}.katex img{border-style:none;max-height:none;max-width:none;min-height:0;min-width:0}.katex .stretchy{display:block;overflow:hidden;position:relative;width:100%}.katex .stretchy:after,.katex .stretchy:before{content:""}.katex .hide-tail{overflow:hidden;position:relative;width:100%}.katex .halfarrow-left{left:0;overflow:hidden;position:absolute;width:50.2%}.katex .halfarrow-right{overflow:hidden;position:absolute;right:0;width:50.2%}.katex .brace-left{left:0;overflow:hidden;position:absolute;width:25.1%}.katex .brace-center{left:25%;overflow:hidden;position:absolute;width:50%}.katex .brace-right{overflow:hidden;position:absolute;right:0;width:25.1%}.katex .x-arrow-pad{padding:0 .5em}.katex .cd-arrow-pad{padding:0 .55556em 0 .27778em}.katex .mover,.katex .munder,.katex .x-arrow{text-align:center}.katex .boxpad{padding:0 .3em}.katex .fbox,.katex .fcolorbox{border:.04em solid;box-sizing:border-box}.katex .cancel-pad{padding:0 .2em}.katex .cancel-lap{margin-left:-.2em;margin-right:-.2em}.katex .sout{border-bottom-style:solid;border-bottom-width:.08em}.katex .angl{border-right:.049em solid;border-top:.049em solid;box-sizing:border-box;margin-right:.03889em}.katex .anglpad{padding:0 .03889em}.katex .eqn-num:before{content:"(" counter(katexEqnNo) ")";counter-increment:katexEqnNo}.katex .mml-eqn-num:before{content:"(" counter(mmlEqnNo) ")";counter-increment:mmlEqnNo}.katex .mtr-glue{width:50%}.katex .cd-vert-arrow{display:inline-block;position:relative}.katex .cd-label-left{display:inline-block;position:absolute;right:calc(50% + .3em);text-align:left}.katex .cd-label-right{display:inline-block;left:calc(50% + .3em);position:absolute;text-align:right}.katex-display{display:block;margin:1em 0;text-align:center}.katex-display>.katex{display:block;text-align:center;white-space:nowrap}.katex-display>.katex>.katex-html{display:block;position:relative}.katex-display>.katex>.katex-html>.tag{position:absolute;right:0}.katex-display.leqno>.katex>.katex-html>.tag{left:0;right:auto}.katex-display.fleqn>.katex{padding-left:2em;text-align:left}body{counter-reset:katexEqnNo mmlEqnNo}
+
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.katex-error {
+	color: var(--vscode-editorError-foreground);
+}
+
+</style>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.css" integrity="sha384-yFRtMMDnQtDRO8rLpMIKrtPCD5jdktao2TV19YiZYWMDkUR5GQZR/NOVTdquEx1j" crossorigin="anonymous">
+<link href="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item { list-style-type: none; } .task-list-item-checkbox { margin-left: -20px; vertical-align: middle; }
+</style>
+        
+        <script src="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.js"></script>
+        
+    </head>
+    <body class="vscode-body vscode-light">
+        <h1 id="протокол-взаимодействия-уровней-системы-верхний-нижний-описание-структуры">Протокол взаимодействия уровней системы (верхний, нижний). Описание структуры.</h1>
+<p><em>Примечание 1</em>. Данный протокол является развитием протокола взаимодействия верхнего и нижненго уровня подводного аппарата (вспоминай бессоные мартовские ночи...).</p>
+<ul>
+<li>
+<p><strong>Версия</strong>: 2.0</p>
+</li>
+<li>
+<p>Аппаратные настройки:</p>
+<ul>
+<li>Интерфейс связи: UART
+<ul>
+<li>Порт UART CONTROL_PCB: <code>USART2</code></li>
+<li>Порт UART HL: <code>/ttyTHS1</code></li>
+</ul>
+</li>
+<li>Параметры порта UART:
+<ul>
+<li>Скорсть: -</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><a href="#%D0%BE%D0%B1%D1%89%D0%B8%D0%B9-%D1%84%D0%BE%D1%80%D0%BC%D0%B0%D1%82-%D0%BF%D0%B0%D0%BA%D0%B5%D1%82%D0%BE%D0%B2">Общий формат пакетов</a></p>
+</li>
+<li>
+<p><a href="#%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0-%D0%BA%D0%BE%D0%BC%D0%B0%D0%BD%D0%B4-dl-%D0%BA%D0%B0%D0%BD%D0%B0%D0%BB%D0%B0">Система команд DL-канала</a></p>
+<ul>
+<li><a href="#%D0%B7%D0%B0%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5-%D0%BB%D0%B8%D0%BD%D0%B5%D0%B9%D0%BD%D0%BE%D0%B3%D0%BE-%D0%B4%D0%B2%D0%B8%D0%B6%D0%B5%D0%BD%D0%B8%D1%8F%D0%B3%D0%BB%D0%B0%D0%B2%D0%BD%D0%BE%D0%B3%D0%BE-%D0%B2%D0%B5%D0%BA%D1%82%D0%BE%D1%80%D0%B0-%D1%82%D1%8F%D0%B3%D0%B8-force">Задание линейного движения(главного вектора тяги) <code>FORCE</code></a></li>
+<li><a href="#%D0%B7%D0%B0%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5-%D0%B3%D0%BB%D0%B0%D0%B2%D0%BD%D0%BE%D0%B3%D0%BE-%D0%B2%D0%B5%D0%BA%D1%82%D0%BE%D1%80%D0%B0-%D0%BC%D0%BE%D0%BC%D0%B5%D0%BD%D1%82%D0%B0-mom">Задание главного вектора момента <code>MOM</code></a></li>
+<li><a href="#%D0%B7%D0%B0%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5-%D1%83%D0%B3%D0%BB%D0%BE%D0%B2%D0%BE%D0%B9-%D1%81%D0%BA%D0%BE%D1%80%D0%BE%D1%81%D1%82%D0%B8-%D0%B2%D1%80%D0%B0%D1%89%D0%B5%D0%BD%D0%B8%D1%8F-%D0%BF%D0%B0-wr">Задание угловой скорости вращения ПА <code>WR</code></a></li>
+<li><a href="#%D1%83%D1%81%D1%82%D0%B0%D0%BD%D0%BE%D0%B2%D0%BA%D0%B0-%D1%83%D1%80%D0%BE%D0%B2%D0%BD%D1%8F-%D1%8F%D1%80%D0%BA%D0%BE%D1%81%D1%82%D0%B8-%D1%84%D0%BE%D0%BD%D0%B0%D1%80%D0%B5%D0%B9-lamp">Установка уровня яркости фонарей <code>LAMP</code></a></li>
+<li><a href="#%D0%B2%D1%80%D0%B0%D1%89%D0%B5%D0%BD%D0%B8%D0%B5-%D0%BA%D0%B0%D0%BC%D0%B5%D1%80%D1%8B-cam">Вращение камеры <code>CAM</code></a></li>
+<li><a href="#%D1%81%D0%B6%D0%B0%D1%82%D0%B8%D0%B5-%D1%81%D1%85%D0%B2%D0%B0%D1%82%D0%B0-grip">Сжатие схвата <code>GRIP</code></a></li>
+<li><a href="#%D0%B2%D1%8B%D0%B1%D0%BE%D1%80-%D1%80%D0%B5%D0%B6%D0%B8%D0%BC%D0%B0-mode">Выбор режима <code>MODE</code></a></li>
+<li><a href="#%D0%B0%D0%BA%D1%82%D0%B8%D0%B2%D0%B0%D1%86%D0%B8%D1%8F-%D1%80%D0%B5%D0%B3%D1%83%D0%BB%D1%8F%D1%82%D0%BE%D1%80%D0%B0-%D0%BF%D0%BE-%D0%BF%D0%BE%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D1%8E-reg">Активация регулятора по положению <code>REG</code></a></li>
+<li><a href="#%D0%BF%D0%B5%D1%80%D0%B5%D0%B2%D0%BE%D0%B4-%D0%BF%D0%B0-%D0%B2-root-%D1%80%D0%B5%D0%B6%D0%B8%D0%BC-root">Перевод ПА в root-режим <code>@ROOT</code></a></li>
+</ul>
+</li>
+<li>
+<p><a href="#up-link-%D0%BA%D0%B0%D0%BD%D0%B0%D0%BB%D0%B0---%D0%BF%D0%B5%D1%80%D0%B5%D0%B4%D0%B0%D1%87%D0%B0-%D1%82%D0%B5%D0%BB%D0%B5%D0%BC%D0%B5%D1%82%D1%80%D0%B8%D0%B8-telem">Up link канала - передача телеметрии <code>TELEM</code></a></p>
+</li>
+<li>
+<p><a href="#rov-command-line-interface-rov-cli">ROV Command Line Interface (rov-cli)</a></p>
+</li>
+</ul>
+<p>Связь двухсторонняя, асинхронная. Со стороны верхнего уровня (HL) передаются команды управления (Down Link канал - DL), со стороны нижнего уровяни (LL) CONTROL_PCB (Up Link канал - UL) показания датчиков (<strong>телеметрия</strong>) и ответы на запросы.</p>
+<h2 id="общий-формат-пакетов">Общий формат пакетов</h2>
+<p>Пакеты сообщение имеют определённую структуру с символами начала, конца сообщения и полями . Данные передаются в преимущественно символьном виде (ASCII), то есть сообщения представляет собой строку. В пакете могут передаваться сообщения разного характера, который определяется в заголовке пакета - <strong>тип пакета</strong>.</p>
+<p><em>Примечание.</em> Версия протокола 2.0 основана на открытых протоколах Wialon IPS и NMEA.</p>
+<p>Струкутура пакета:</p>
+<pre><code><code><div>$&lt;TYPE&gt;$&lt;var_1,..,var_n&gt;&lt;CR&gt;&lt;LF&gt;
+</div></code></code></pre>
+<table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Описание</th>
+<th>Формат</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$</code></td>
+<td>Символ начала пакета (<code>PRTCL2_START_SYMBOL</code>). По умолчанию импользуется символ <code>$</code>, но может быть переопределён на дургой символ</td>
+<td>ASCII-символ</td>
+</tr>
+<tr>
+<td><code>&lt;TYPE&gt;</code></td>
+<td>Тип пакета (<code>PRTCL2_PKG_TYPE</code>)</td>
+<td>ASCII-строка</td>
+</tr>
+<tr>
+<td><code>$</code></td>
+<td>Разделитель поля типа пакета и непосредественно содержания сообщения пакета (<code>PRTCL2_PT_SYMBOL</code>). Также может быть переропределён другим символом (например, в NMEA это запятая <code>,</code>)</td>
+<td></td>
+</tr>
+<tr>
+<td><code>&lt;var_1,..,var_n&gt;</code></td>
+<td>Поле сообщения - непосредственно сами данные (сообщение), относящиеся к соответствующему заголовку. Внутри сообщения данные, если их несколько, разделяются знаком запятой <code>,</code>. <em>Данные в некоторых случаях могу отсутствовать, если заголовк считается командой</em>.</td>
+<td>ASCII-строка и бинарные данные. Если бинарные, то разделитель отсутствует</td>
+</tr>
+<tr>
+<td><code>&lt;CR&gt;&lt;LF&gt;</code></td>
+<td>Символы конца сообщения (символы переноса каректи и строки <code>\r\n</code>)</td>
+<td>Спец. символы ASCII</td>
+</tr>
+</tbody>
+</table>
+<p>Пример сообщения (<em>без контрольной суммы CRC</em>):</p>
+<pre><code><code><div>$FORCE$10,-20,30\r\n
+$MOM$30,40,-50\r\n
+</div></code></code></pre>
+<h2 id="система-команд-dl-канала">Система команд DL-канала</h2>
+<p>В DL-канал HL отправляет команды LL. К этим командам относятся: задание линейного и вращательного движения, поворот камеры, включения фонаря и др.</p>
+<h3 id="задание-линейного-движенияглавного-вектора-тяги-force">Задание линейного движения(главного вектора тяги) <code>FORCE</code></h3>
+<p>Линейное движение задаётся вектором силы тяги относительно системы координат подводного робота (ПР). Вектор имеет три компоненты - движение вперёд-назад (Fx), вправл-влево (Fy), вверх-вниз (Fz).</p>
+<p><strong>Описание пакета:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Значение</th>
+<th>Формат</th>
+<th>Диапазон</th>
+<th>Ед. изм</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Заголовок</td>
+<td><code>FORCE</code></td>
+<td>ASCII-строка</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Данные</td>
+<td><code>Fx,Fy,Fz</code></td>
+<td>Символьный формат числа. <em>Поддерживаются целочисленный формат и формат с плавающей точкой</em></td>
+<td>-</td>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>Н</mtext></mrow><annotation encoding="application/x-tex">Н</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord cyrillic_fallback">Н</span></span></span></span></td>
+</tr>
+<tr>
+<td>Окончание команды</td>
+<td><code>\r\n</code></td>
+<td>Символ</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Пример сообщения:</p>
+<pre><code><code><div>$FORCE$&lt;Fx,Fy,Fz&gt;\r\n
+$FORCE$100.01,-200.2,300\r\n
+</div></code></code></pre>
+<hr>
+<h3 id="задание-главного-вектора-момента-mom">Задание главного вектора момента <code>MOM</code></h3>
+<p>Вращательное движение задаётся главным вектором момента вращения относительно системы координат подводного робота (ПР). Вектор имеет три компоненты - (Mx), (My), (Mz).</p>
+<p><strong>Описание пакета:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Значение</th>
+<th>Формат</th>
+<th>Диапазон</th>
+<th>Ед. изм</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Заголовок</td>
+<td><code>MOM</code></td>
+<td>ASCII-строка</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Данные</td>
+<td><code>Mx,My,Mz</code></td>
+<td>Символьный формат числа. <em>Поддерживаются целочисленный формат и формат с плавающей точкой</em></td>
+<td>-</td>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>Н</mtext><mo>⋅</mo><mtext>м</mtext></mrow><annotation encoding="application/x-tex">Н\cdotм</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord cyrillic_fallback">Н</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord cyrillic_fallback">м</span></span></span></span></td>
+</tr>
+<tr>
+<td>Окончание команды</td>
+<td><code>\r\n</code></td>
+<td>Символ</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Пример сообщения:</p>
+<pre><code><code><div>$MOM$&lt;Mx,My,Mz&gt;\r\n
+$MOM$10.1,20,30.33\r\n
+</div></code></code></pre>
+<hr>
+<h3 id="задание-угловой-скорости-вращения-па-wr">Задание угловой скорости вращения ПА <code>WR</code></h3>
+<p>Приведение ПА в требуемое угловое положение осуществляется вращением с заданной скоростью с джойстика. При отпускании стиков джойстика, ПА останавливается в текущем положении и стабилизируется в нём. Таким образом, угловой скоростью инкрементируется угловая ориентации ПА. В сообщении пакета передаются компоненты вектора угловой скорости <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="bold">ω</mi><mi>r</mi></msub></mrow><annotation encoding="application/x-tex">\mathbf{\omega}_r</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">ω</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.02778em;">r</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> в разложении в базисе ПА: <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>ω</mi><mi>r</mi><mi>x</mi></msubsup></mrow><annotation encoding="application/x-tex">\omega_r^x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.911392em;vertical-align:-0.247em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">ω</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.664392em;"><span style="top:-2.4530000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.02778em;">r</span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">x</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.247em;"><span></span></span></span></span></span></span></span></span></span>, <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>ω</mi><mi>r</mi><mi>y</mi></msubsup></mrow><annotation encoding="application/x-tex">\omega_r^y</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.911392em;vertical-align:-0.247em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">ω</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.664392em;"><span style="top:-2.4530000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.02778em;">r</span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.03588em;">y</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.247em;"><span></span></span></span></span></span></span></span></span></span>, <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>ω</mi><mi>r</mi><mi>z</mi></msubsup></mrow><annotation encoding="application/x-tex">\omega_r^z</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.911392em;vertical-align:-0.247em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">ω</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.664392em;"><span style="top:-2.4530000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.02778em;">r</span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.04398em;">z</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.247em;"><span></span></span></span></span></span></span></span></span></span>.</p>
+<p><strong>Описание пакета:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Значение</th>
+<th>Формат</th>
+<th>Диапазон</th>
+<th>Ед. изм</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Заголовок</td>
+<td><code>WR</code></td>
+<td>ASCII-строка</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Данные</td>
+<td><code>wx,wy,wz</code></td>
+<td>Символьный формат числа. <em>Поддерживаются целочисленный формат и формат с плавающей точкой</em></td>
+<td>-</td>
+<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>рад</mtext><mi mathvariant="normal">/</mi><mtext>с</mtext></mrow><annotation encoding="application/x-tex">рад/с</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord cyrillic_fallback">р</span><span class="mord cyrillic_fallback">а</span><span class="mord cyrillic_fallback">д</span><span class="mord">/</span><span class="mord cyrillic_fallback">с</span></span></span></span></td>
+</tr>
+<tr>
+<td>Окончание команды</td>
+<td><code>\r\n</code></td>
+<td>Символ</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Пример сообщения:</p>
+<pre><code><code><div>$WR$&lt;wx,wy,wz&gt;\r\n
+$WR$10.1,20,30.33\r\n
+</div></code></code></pre>
+<hr>
+<h3 id="установка-уровня-яркости-фонарей-lamp">Установка уровня яркости фонарей <code>LAMP</code></h3>
+<p>В сообщении передаётся уровень яркости пары фонарей <code>lvl1</code>, <code>lvl2</code> 0...100%. Уровень 0 отключает фонари.</p>
+<p><strong>Описание пакета:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Значение</th>
+<th>Формат</th>
+<th>Диапазон</th>
+<th>Ед. изм</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Заголовок</td>
+<td><code>LAMP</code></td>
+<td>ASCII-строка</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Данные</td>
+<td><code>lvl1, lvl2</code></td>
+<td>Символьный формат числа. <em>Целочисленный формат</em></td>
+<td>0...100</td>
+<td>%</td>
+</tr>
+<tr>
+<td>Окончание команды</td>
+<td><code>\r\n</code></td>
+<td>Символ</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Пример сообщения:</p>
+<pre><code><code><div>$LAMP$&lt;lvl1,lvl2&gt;\r\n
+$LAMP$50,80\r\n
+</div></code></code></pre>
+<hr>
+<h3 id="вращение-камеры-cam">Вращение камеры <code>CAM</code></h3>
+<p>В сообщении передаются углы поворота осей камеры.</p>
+<p><strong>Описание пакета:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Значение</th>
+<th>Формат</th>
+<th>Диапазон</th>
+<th>Ед. изм</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Заголовок</td>
+<td><code>CAM</code></td>
+<td>ASCII-строка</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Данные</td>
+<td><code>c1,c2</code></td>
+<td>Символьный формат числа. <em>Целочисленный формат</em></td>
+<td>0...180</td>
+<td>градусы</td>
+</tr>
+<tr>
+<td>Окончание команды</td>
+<td><code>\r\n</code></td>
+<td>Символ</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Пример сообщения:</p>
+<pre><code><code><div>$CAM$&lt;c1,c2&gt;\r\n
+$CAM$90,180\r\n
+</div></code></code></pre>
+<hr>
+<h3 id="сжатие-схвата-grip">Сжатие схвата <code>GRIP</code></h3>
+<p>Команда активации схвата определяется скоростью сжатия схвата (<code>a</code>) и задаётся в диапазоне -100...100, где 0 - останов.</p>
+<p><strong>Описание пакета:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Значение</th>
+<th>Формат</th>
+<th>Диапазон</th>
+<th>Ед. изм</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Заголовок</td>
+<td><code>GRIP</code></td>
+<td>ASCII-строка</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Данные</td>
+<td><code>a</code></td>
+<td>Символьный формат числа. <em>Целочисленный формат</em></td>
+<td>-100...100</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Окончание команды</td>
+<td><code>\r\n</code></td>
+<td>Символ</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Пример сообщения:</p>
+<pre><code><code><div>$GRIP$&lt;a&gt;\r\n
+$GRIP$70\r\n
+</div></code></code></pre>
+<hr>
+<h3 id="выбор-режима-mode">Выбор режима <code>MODE</code></h3>
+<p>В сообщении передаётся идентификатор текущего режима. <code>0</code> - базовый режим, <code>1</code> - режим акробатик</p>
+<p><strong>Описание пакета:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Значение</th>
+<th>Формат</th>
+<th>Диапазон</th>
+<th>Ед. изм</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Заголовок</td>
+<td><code>MODE</code></td>
+<td>ASCII-строка</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Данные</td>
+<td><code>mode</code></td>
+<td>Символьный формат числа. <em>Целочисленный формат</em></td>
+<td>0, 1</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Окончание команды</td>
+<td><code>\r\n</code></td>
+<td>Символ</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Пример сообщения:</p>
+<pre><code><code><div>$MODE$&lt;mode&gt;\r\n
+$MODE$1\r\n
+</div></code></code></pre>
+<hr>
+<h3 id="активация-регулятора-по-положению-reg">Активация регулятора по положению <code>REG</code></h3>
+<p>В сообщении передаётся флаг активации текущего режима. <code>0</code> - регулятор включен, <code>1</code> - регулятор отключен</p>
+<p><strong>Описание пакета:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Значение</th>
+<th>Формат</th>
+<th>Диапазон</th>
+<th>Ед. изм</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Заголовок</td>
+<td><code>REG</code></td>
+<td>ASCII-строка</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Данные</td>
+<td><code>enable</code></td>
+<td>Символьный формат числа. <em>Целочисленный формат</em></td>
+<td>0, 1</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Окончание команды</td>
+<td><code>\r\n</code></td>
+<td>Символ</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Пример сообщения:</p>
+<pre><code><code><div>$REG$&lt;enable&gt;\r\n
+$REG$1\r\n
+</div></code></code></pre>
+<hr>
+<h3 id="перевод-па-в-root-режим-root">Перевод ПА в root-режим <code>@ROOT</code></h3>
+<p>В этом режиме через последовательное соединение предоставляется команданый режим управлениями система ПА через интерфейс командной строки ROV CLI. Вместе с командой передаётся пароль root-режима.</p>
+<table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Значение</th>
+<th>Формат</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Заголовок</td>
+<td><code>@ROOT</code></td>
+<td>ASCII-строка</td>
+</tr>
+<tr>
+<td>Данные</td>
+<td><code>password</code></td>
+<td>Пароль входа (<code>1111</code> по умолчанию)</td>
+</tr>
+<tr>
+<td>Окончание команды</td>
+<td><code>\r\n</code></td>
+<td>Символ</td>
+</tr>
+</tbody>
+</table>
+<p>Пример сообщения:</p>
+<pre><code><code><div>$@ROOT$&lt;password&gt;\r\n
+$@ROOT$1111\r\n
+</div></code></code></pre>
+<p>Подробнее в разделе <a href="#rov-command-line-interface-rov-cli">root-режим</a>.</p>
+<hr>
+<h2 id="up-link-канала---передача-телеметрии-telem">Up link канала - передача телеметрии <code>TELEM</code></h2>
+<p>Телеметрия передаётся одним пакетом. Формат пакета также определяется протоколом.
+Телеметрия, отправленная в UL-канале (от LL к HL) содержат обратную связь с датчиков и вычисленного угловй ориентации ПА. К датчикам относятся: IMU сенсор, датчики внешнего и внутреннего давления, датчики внешенй и внутренней температуры, уровень заряда АКБ. Вычисление углового положения происходит на стороне CONTROL_PCB. Значение углового положения определяется кватернионом собственного положения.</p>
+<p>Пакет телеметрии UL-канала представляет собой строку общего формата, в которой содержатся все возможные передаваемые данные с датчиков и оценка угловой ориентации (кватернион собственного положения - по отношению к Земле). Порядок данных строго определён. Данные следуют за заголовком пакета (типа пакета). Данные имеют числовой тип (целочисленный и вещественный).</p>
+<p><strong>Описание пакета:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Значение</th>
+<th>Формат</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Заголовок</td>
+<td><code>TELEM</code></td>
+<td>ASCII-строка</td>
+</tr>
+<tr>
+<td>Данные</td>
+<td><code>Q_w,Q_x,Q_y,Q_z,wx,wy,wz,ax,ay,az,hx,hy,hz,t_out,depth,v,mode,reg</code></td>
+<td>Символьный формат числа. <em>Поддерживаются целочисленный формат и формат с плавающей точкой</em></td>
+</tr>
+<tr>
+<td>Окончание команды</td>
+<td><code>\r\n</code></td>
+<td>Символ</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Содержание пакета телеметрии</strong></p>
+<table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Значение</th>
+<th>Формат</th>
+<th>Диапазон</th>
+<th>Ед. изм.</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Q_w</code></td>
+<td>Действительная часть кватерниона w</td>
+<td>Вещественное в символьном виде (<code>float</code>)</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>Q_x</code></td>
+<td>Мнимая часть кватерниона x</td>
+<td>Вещественное в символьном виде (<code>float</code>)</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>Q_y</code></td>
+<td>Мнимая часть кватерниона y</td>
+<td>Вещественное в символьном виде (<code>float</code>)</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>Q_z</code></td>
+<td>Мнимая часть кватерниона z</td>
+<td>Вещественное в символьном виде (<code>float</code>)</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>wx</code>, <code>wy</code>, <code>wz</code></td>
+<td>Показания гироскопа - значения угловой скорости вокург связанных осей ПР</td>
+<td>Вещественное в символьном виде (<code>float</code>)</td>
+<td>-</td>
+<td>град/с</td>
+</tr>
+<tr>
+<td><code>ax</code>, <code>ay</code>, <code>az</code></td>
+<td>Показания акселерометра - проекция ускорения движенгия на связанные оси ПР</td>
+<td>Вещественное в символьном виде (<code>float</code>)</td>
+<td>-</td>
+<td>g</td>
+</tr>
+<tr>
+<td><code>hx</code>, <code>hy</code>, <code>hz</code></td>
+<td>Показания магнетометра - проекция магнитного поля на связанные оси ПР</td>
+<td>Вещественное в символьном виде (<code>float</code>)</td>
+<td>-</td>
+<td>мкТл</td>
+</tr>
+<tr>
+<td><code>t_out</code></td>
+<td>Показания датчика наружней температуры</td>
+<td>Вещественное в символьном виде (<code>float</code>)</td>
+<td>-</td>
+<td>Градусы цельсия</td>
+</tr>
+<tr>
+<td><code>depth</code></td>
+<td>Глубина по показаниям датчика давления на задней панели колбы</td>
+<td>Вещественное в символьном виде (<code>float</code>)</td>
+<td>-</td>
+<td>мм</td>
+</tr>
+<tr>
+<td><code>v</code></td>
+<td>Уровень напряжения АКБ</td>
+<td>Вещественное в символьном виде (<code>float</code>)</td>
+<td>-</td>
+<td>В</td>
+</tr>
+<tr>
+<td><code>mode</code></td>
+<td>Режим управления ПА</td>
+<td>Целочисленное в символьном виде (<code>int</code>)</td>
+<td><code>0</code> - базовый, <code>1</code> - акробатик, <code>2</code> - останов</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>reg</code></td>
+<td>Режим работы регулятора</td>
+<td>Целочисленное в символьном виде (<code>int</code>)</td>
+<td><code>0</code> - ВЫКЛ, <code>1</code> - ВКЛ</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<p>Пример сообщения:</p>
+<pre><code><code><div>$TELEM$Q_w,Q_x,Q_y,Q_z,wx,wy,wz,ax,ay,az,hx,hy,hz,t_out,depth,v,mode,reg\r\n
+</div></code></code></pre>
+<h2 id="rov-command-line-interface-rov-cli">ROV Command Line Interface (rov-cli)</h2>
+<p>После перевода ПА в root-режим становится доступным интерфейс командной строки для управления системами ПА.
+Команды обязательно должны завершаться символами CRLF <code>\r\n</code></p>
+<p><strong>Список команд</strong></p>
+<ol>
+<li><code>exit</code> - выход из rov-cli</li>
+<li><code>motor &lt;ch&gt; &lt;value&gt;</code> - управление движителем (<code>&lt;ch&gt;</code> - канал, к которому подлкючен движитель 1...8, <code>&lt;value&gt;</code> - тяга в граммах -1800...1800)</li>
+<li><code>lamp &lt;ch&gt; &lt;value&gt;</code> - управление фонарём (<code>&lt;ch&gt;</code> - канал, к которому подлкючен фонарь 1...3, <code>&lt;value&gt;</code> - уровень яркости 0...100 %)</li>
+<li><code>grip &lt;value&gt;</code> - управление схватом (<code>&lt;value&gt;</code> - скорость сжатия -100...100, 0 - останов!)</li>
+<li><code>servo &lt;ch&gt; &lt;value&gt;</code> - управление сервоприводами подвеса (<code>&lt;ch&gt;</code> - канал сервопривода 1, 2, <code>&lt;value&gt;</code> - угол поворота 0...180 градусов)</li>
+<li><code>control coef get</code> - считывание текущих значений коэффициентов регулятора положения</li>
+<li><code>control coef set &lt;kwp&gt; &lt;kwi&gt;</code> - задание коэффициентов регулятора (<code>&lt;kwp&gt;</code> - коэф. ПИ-регулятора конутра угловой скорости (П), <code>&lt;kwi&gt;</code> - коэф. ПИ-регулятора конутра угловой скорости (И))</li>
+<li><code>get pos</code> - считывание ткущей позиции в углах Эйлера roll (крен), pitch (тангаж), yaw (курс)</li>
+</ol>
+
+    </body>
+    </html>
