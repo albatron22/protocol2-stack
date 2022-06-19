@@ -8,26 +8,25 @@ extern "C"
 
 #include <stdio.h>
 #include <stdint.h>
-#include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>
 
     extern const char PRTCL2_START_SYMBOL; // символ начала пакета
     extern const char PRTCL2_PT_SYMBOL;    // символ окончания поля типа пакета
-    extern const char PRTCL2_END_PKG_r;    // первый символ окончания пакета
-    extern const char PRTCL2_END_PKG_n;    // второй символ окончания пакета
+    extern const char PRTCL2_END_PKG_CR;   // первый символ окончания пакета
+    extern const char PRTCL2_END_PKG_LF;   // второй символ окончания пакета
 
-    typedef struct Prtcl2_Package_Struct
+    typedef struct Protocol2_Package_Struct
     {
         char *type;                         // Тип пакета (дескриптор)
         void (*CallBack_pkg)(uint8_t *msg); // call-back функция обработки сообщения по типу пакета
 
-    } Prtcl2_Package_t;
+    } Protocol2_Package_t;
 
     /**
      * @brief Главная структура данных стека протокола
      */
-    typedef struct Prtcl2_Handle_Struct
+    typedef struct Protocol2_Handle_Struct
     {
         /**
          * DL-канал
@@ -49,50 +48,33 @@ extern "C"
             uint8_t msg[512]; // поле данных
             size_t indxmsg;   // индекс текущей записи в поле данных
 
-            Prtcl2_Package_t *pkg; // ссылка на массив структур зарегистрированных пакетов
-            size_t NumOfPKG;          // количество зарегистрированных пакетов сообщений
+            Protocol2_Package_t *pkg; // ссылка на массив структур зарегистрированных пакетов
+            size_t numOfPKG;       // количество зарегистрированных пакетов сообщений
 
             uint32_t ts;      // метка времени
             uint32_t timeout; // таймаут ожидания пакета
         } dl;
-        /**
-         * UL-канал
-         */
-        struct
-        {
-            enum // состояние UL-канала (передача телеметрии)
-            {
-                PRTCL2_UL_IDLE_STATE = 0,
-                PRTCL2_UL_CREATE_PKG,
-                PRTCL2_UL_SEND_PKG,
-                PRTCL2_UL_WAIT_STATE
-            } state;
+        //------------------------------------------------------------------------------------------------------------------------------
+        //----------------------------------------------------------------------------------------------------------------------------
+        /* Виртуальный порт (ссылки на внешние функции работы с потоком данных по uart) */
+        size_t (*VPortAvailable)();        // возвращает количество доступных байт для чтения
+        uint8_t (*VPortRead)();            // чтение одного байта
+        void (*VPortClean)();              // очистка содержимого приёмного буфера порта
+        int (*VPortSendPKG)(uint8_t *pkg); // отправка массива байт данных в порт
+        
+        uint32_t (*VGetTick_ms)();         // системное время, мс
 
-            bool enable;     // активация/деактивация передачи телметрии
-            uint32_t period; // период отправки телеметрии, мс
-            uint32_t ts;
-
-            char *pt;         // заголовок пакета телеметрии согласно спецификации протокола
-            uint8_t pkg[512]; // пакет сообщения телеметрии
-
-            bool end_of_send; // флаг завершения отправки (поднимается в HAL_UART_TxCpltCallback)
-        } ul;
-        /* Внешние функции работы с потоком данных (для портирования протокола) */
-        size_t (*portAvailable)(); // возвращает количество доступных байт в приёмном буфере интерфейса
-        uint8_t (*portRead)();     // считывает новый байт из буфера
-        void (*portClean)();       // очистка содержимого приёмного буфера
         /**
          * @brief формирование пакета
          * @param pt строка заголовка пакета
          * @param pkg пакет телеметриии, который нужно сформировать
          */
-        void (*portCreatePKG)(char *pt, uint8_t *pkg);
-        int (*portSendPKG)(uint8_t *pkg); // отправка пакета по интерфейсу
+        void (*CreatePKG)(char *pt, uint8_t *pkg);
 
-    } Prtcl2_Handle_t;
+    } Protocol2_Handle_t;
 
-    void Prtcl2_Init(Prtcl2_Handle_t *prtcl2);
-    void Prtcl2_Loop(Prtcl2_Handle_t *prtcl2);
+    void Protocol2_Init(Protocol2_Handle_t *prtcl2);
+    void Protocol2_Loop(Protocol2_Handle_t *prtcl2);
 
 #ifdef __cplusplus
 }
