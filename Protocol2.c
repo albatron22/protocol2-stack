@@ -11,11 +11,16 @@ const char PRTCL2_PT_SYMBOL = '$';    // символ окончания пол�
 const char PRTCL2_END_PKG_CR = '\r';   // первый символ окончания пакета <CR>
 const char PRTCL2_END_PKG_LF = '\n';   // второй символ окончания пакета <LF>
 
+uint8_t pkg[512] = {0};
+bool dataIsSent = false;
+
 static void DL_Reset(Protocol2_Handle_t *prtcl2);
 static void DL_IdleState(Protocol2_Handle_t *prtcl2);
 static void DL_Reception_PT_State(Protocol2_Handle_t *prtcl2);
 static void DL_Reception_MSG_State(Protocol2_Handle_t *prtcl2);
 static void DL_ProcessingState(Protocol2_Handle_t *prtcl2);
+
+static void Delayed_Sendig(Protocol2_Handle_t *prtcl2);
 
 /**
  * Таблица функций состояний КА DL-канала
@@ -52,6 +57,40 @@ void Protocol2_Loop(Protocol2_Handle_t *prtcl2)
         prtcl2->dl.state = PRTCL2_DL_IDLE_STATE;
 
     DL_State_Table[prtcl2->dl.state](prtcl2);
+    Delayed_Sendig(prtcl2);
+}
+
+/**
+ * @brief Отправка пакета, собранного в соответствии с описанием протокола
+ * @param pt строка заголовка пакета
+ * @param data данные в виде строки (поля данных разделены символом запятой ',')
+ */
+void Protocol2_SendPKG(Protocol2_Handle_t *prtcl2, char *pt, char *data)
+{
+    /* Сборка пакета */
+    sprintf((char *)pkg, "%c%s%c%s%c%c",
+            PRTCL2_START_SYMBOL, pt, PRTCL2_PT_SYMBOL,
+            data,
+            PRTCL2_END_PKG_CR, PRTCL2_END_PKG_LF);
+    /**
+     * Отправка данных через виртуальный порт. Если функ. не вернула 0 (значит порт занят) -> 
+     * отложенная отправка
+    */
+    if (prtcl2->VPortSendData(pkg) != 0)
+        dataIsSent = true;
+}
+
+/**
+ * @brief Отложенная отправка пакета
+ * @param prtcl2 ссылка на структуру данных протокола Protocol2_Handle_t
+ */
+static void Delayed_Sendig(Protocol2_Handle_t *prtcl2)
+{
+    if (dataIsSent)
+    {
+        if (prtcl2->VPortSendData(pkg) == 0)
+            dataIsSent = false;
+    }
 }
 
 /**
@@ -85,7 +124,7 @@ static void DL_IdleState(Protocol2_Handle_t *prtcl2)
             prtcl2->dl.state = PRTCL2_DL_RECEPTION_PT_STATE; // переход на состояние считывания дескриптора (типа пакета)
         }
     }
-    prtcl2->dl.ts = HAL_GetTick();
+    prtcl2->dl.ts = prtcl2->VGetTick_ms();
 }
 
 /**

@@ -11,11 +11,6 @@ extern "C"
 #include <stdlib.h>
 #include <stdbool.h>
 
-    extern const char PRTCL2_START_SYMBOL; // символ начала пакета
-    extern const char PRTCL2_PT_SYMBOL;    // символ окончания поля типа пакета
-    extern const char PRTCL2_END_PKG_CR;   // первый символ окончания пакета
-    extern const char PRTCL2_END_PKG_LF;   // второй символ окончания пакета
-
     typedef struct Protocol2_Package_Struct
     {
         char *type;                         // Тип пакета (дескриптор)
@@ -49,7 +44,7 @@ extern "C"
             size_t indxmsg;   // индекс текущей записи в поле данных
 
             Protocol2_Package_t *pkg; // ссылка на массив структур зарегистрированных пакетов
-            size_t numOfPKG;       // количество зарегистрированных пакетов сообщений
+            size_t numOfPKG;          // количество зарегистрированных пакетов сообщений
 
             uint32_t ts;      // метка времени
             uint32_t timeout; // таймаут ожидания пакета
@@ -57,24 +52,23 @@ extern "C"
         //------------------------------------------------------------------------------------------------------------------------------
         //----------------------------------------------------------------------------------------------------------------------------
         /* Виртуальный порт (ссылки на внешние функции работы с потоком данных по uart) */
-        size_t (*VPortAvailable)();        // возвращает количество доступных байт для чтения
-        uint8_t (*VPortRead)();            // чтение одного байта
-        void (*VPortClean)();              // очистка содержимого приёмного буфера порта
-        int (*VPortSendPKG)(uint8_t *pkg); // отправка массива байт данных в порт
-        
-        uint32_t (*VGetTick_ms)();         // системное время, мс
+        size_t (*VPortAvailable)();         // возвращает количество доступных байт для чтения
+        uint8_t (*VPortRead)();             // чтение одного байта
+        void (*VPortClean)();               // очистка содержимого приёмного буфера порта
 
         /**
-         * @brief формирование пакета
-         * @param pt строка заголовка пакета
-         * @param pkg пакет телеметриии, который нужно сформировать
+         * @brief Отправка массива байт данных в порт
+         * @param pkg массив данных для отправки (массив должен быть глобальным)
+         * @return Статус отправки: 0 - OK, 1 - NOK (busy or error)
          */
-        void (*CreatePKG)(char *pt, uint8_t *pkg);
+        int (*VPortSendData)(uint8_t *pkg); // 
 
+        uint32_t (*VGetTick_ms)(); // системное время, мс
     } Protocol2_Handle_t;
 
     void Protocol2_Init(Protocol2_Handle_t *prtcl2);
     void Protocol2_Loop(Protocol2_Handle_t *prtcl2);
+    void Protocol2_SendPKG(Protocol2_Handle_t *prtcl2, char *pt, char *data);
 
 #ifdef __cplusplus
 }
