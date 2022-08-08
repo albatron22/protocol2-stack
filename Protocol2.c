@@ -20,7 +20,7 @@ static void DL_Reception_PT_State(Protocol2_Handle_t *prtcl2);
 static void DL_Reception_MSG_State(Protocol2_Handle_t *prtcl2);
 static void DL_ProcessingState(Protocol2_Handle_t *prtcl2);
 
-static void Delayed_Sendig(Protocol2_Handle_t *prtcl2);
+static void DelayedSendig(Protocol2_Handle_t *prtcl2);
 
 /**
  * Таблица функций состояний КА DL-канала
@@ -36,7 +36,7 @@ void (*DL_State_Table[])(Protocol2_Handle_t *prtcl2) = {
  * @param prtcl2 ссылка на структуру данных протокола Protocol2_Handle_t
  * @return None
 */
-void Protocol2_Init(Protocol2_Handle_t *prtcl2)
+void Protocol2Init(Protocol2_Handle_t *prtcl2)
 {
     /* Down-link канал */
     prtcl2->dl.state = PRTCL2_DL_IDLE_STATE;
@@ -50,14 +50,14 @@ void Protocol2_Init(Protocol2_Handle_t *prtcl2)
  * @param prtcl2 ссылка на структуру данных протокола Protocol2_Handle_t
  * @return None
 */
-void Protocol2_Loop(Protocol2_Handle_t *prtcl2)
+void Protocol2Loop(Protocol2_Handle_t *prtcl2)
 {
     /* Если ожидание конца пакета превышено - сброс КА */
     if (prtcl2->VGetTick_ms() - prtcl2->dl.ts >= prtcl2->dl.timeout)
         prtcl2->dl.state = PRTCL2_DL_IDLE_STATE;
 
     DL_State_Table[prtcl2->dl.state](prtcl2);
-    Delayed_Sendig(prtcl2);
+    DelayedSendig(prtcl2);
 }
 
 /**
@@ -65,7 +65,7 @@ void Protocol2_Loop(Protocol2_Handle_t *prtcl2)
  * @param pt строка заголовка пакета
  * @param data данные в виде строки (поля данных разделены символом запятой ',')
  */
-void Protocol2_SendPKG(Protocol2_Handle_t *prtcl2, char *pt, char *data)
+void Protocol2SendPKG(Protocol2_Handle_t *prtcl2, char *pt, char *data)
 {
     /* Сборка пакета */
     sprintf((char *)pkg, "%c%s%c%s%c%c",
@@ -84,7 +84,7 @@ void Protocol2_SendPKG(Protocol2_Handle_t *prtcl2, char *pt, char *data)
  * @brief Отложенная отправка пакета
  * @param prtcl2 ссылка на структуру данных протокола Protocol2_Handle_t
  */
-static void Delayed_Sendig(Protocol2_Handle_t *prtcl2)
+static void DelayedSendig(Protocol2_Handle_t *prtcl2)
 {
     if (dataIsSent)
     {
@@ -100,8 +100,8 @@ static void Delayed_Sendig(Protocol2_Handle_t *prtcl2)
 */
 static void DL_Reset(Protocol2_Handle_t *prtcl2)
 {
-    prtcl2->dl.indxpt = 0;
-    prtcl2->dl.indxmsg = 0;
+    prtcl2->dl.indx_pt = 0;
+    prtcl2->dl.indx_msg = 0;
     memset(prtcl2->dl.pt, 0, sizeof(prtcl2->dl.pt));
     memset(prtcl2->dl.msg, 0, sizeof(prtcl2->dl.msg));
 }
@@ -147,10 +147,10 @@ static void DL_Reception_PT_State(Protocol2_Handle_t *prtcl2)
         }
         else
         {
-            if (prtcl2->dl.indxpt < sizeof(prtcl2->dl.pt)) // проверка на выход за границы буфера поля
+            if (prtcl2->dl.indx_pt < sizeof(prtcl2->dl.pt)) // проверка на выход за границы буфера поля
             {
-                prtcl2->dl.pt[prtcl2->dl.indxpt] = c;
-                prtcl2->dl.indxpt++;
+                prtcl2->dl.pt[prtcl2->dl.indx_pt] = c;
+                prtcl2->dl.indx_pt++;
             }
         }
     }
@@ -180,10 +180,10 @@ static void DL_Reception_MSG_State(Protocol2_Handle_t *prtcl2)
         }
         else if (c != PRTCL2_END_PKG_CR)
         {
-            if (prtcl2->dl.indxmsg < sizeof(prtcl2->dl.msg)) // проверка на выход за границы буфера поля
+            if (prtcl2->dl.indx_msg < sizeof(prtcl2->dl.msg)) // проверка на выход за границы буфера поля
             {
-                prtcl2->dl.msg[prtcl2->dl.indxmsg] = c;
-                prtcl2->dl.indxmsg++;
+                prtcl2->dl.msg[prtcl2->dl.indx_msg] = c;
+                prtcl2->dl.indx_msg++;
             }
         }
     }
@@ -198,7 +198,7 @@ static void DL_Reception_MSG_State(Protocol2_Handle_t *prtcl2)
 */
 static void DL_ProcessingState(Protocol2_Handle_t *prtcl2)
 {
-    for (size_t i = 0; i < prtcl2->dl.numOfPKG; i++)
+    for (size_t i = 0; i < prtcl2->dl.num_of_pkg; i++)
     {
         if (!strncmp((const char *)prtcl2->dl.pt, prtcl2->dl.pkg[i].type, strlen(prtcl2->dl.pkg[i].type)))
         {

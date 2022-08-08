@@ -2,6 +2,9 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
+
+extern bool rx_flag;
 
 /**
  * @brief Call-back функция обработчика пакета по типу <PT1>.
@@ -11,7 +14,8 @@
 */
 void PT1_PKG_CallBack(uint8_t *msg)
 {
-    printf("Recieve <PT1> PKG");
+    printf("Recieve <PT1> PKG\nDATA:\t%s", msg);
+    rx_flag = true;
 }
 
 /**
@@ -22,5 +26,6 @@ void PT1_PKG_CallBack(uint8_t *msg)
 */
 void PT2_PKG_CallBack(uint8_t *msg)
 {
-    printf("Recieve <PT2> PKG");
+    printf("Recieve <PT2> PKG\nDATA:\t%s", msg);
+    rx_flag = true;
 }

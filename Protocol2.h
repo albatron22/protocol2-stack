@@ -6,7 +6,6 @@ extern "C"
 {
 #endif
 
-#include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -39,12 +38,12 @@ extern "C"
             bool enable; // активация/деактивация работы DL-стека
 
             uint8_t pt[32];   // поле типа пакета <TYPE>
-            size_t indxpt;    // индекс текущей записи в поле заголовка
+            size_t indx_pt;    // индекс текущей записи в поле заголовка
             uint8_t msg[512]; // поле данных
-            size_t indxmsg;   // индекс текущей записи в поле данных
+            size_t indx_msg;   // индекс текущей записи в поле данных
 
             Protocol2_Package_t *pkg; // ссылка на массив структур зарегистрированных пакетов
-            size_t numOfPKG;          // количество зарегистрированных пакетов сообщений
+            size_t num_of_pkg;          // количество зарегистрированных пакетов сообщений
 
             uint32_t ts;      // метка времени
             uint32_t timeout; // таймаут ожидания пакета
@@ -66,9 +65,9 @@ extern "C"
         uint32_t (*VGetTick_ms)(); // системное время, мс
     } Protocol2_Handle_t;
 
-    void Protocol2_Init(Protocol2_Handle_t *prtcl2);
-    void Protocol2_Loop(Protocol2_Handle_t *prtcl2);
-    void Protocol2_SendPKG(Protocol2_Handle_t *prtcl2, char *pt, char *data);
+    void Protocol2Init(Protocol2_Handle_t *prtcl2);
+    void Protocol2Loop(Protocol2_Handle_t *prtcl2);
+    void Protocol2SendPKG(Protocol2_Handle_t *prtcl2, char *pt, char *data);
 
 #ifdef __cplusplus
 }
