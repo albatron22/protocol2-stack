@@ -17,10 +17,12 @@ bool dataIsSent = false;
 static void DL_Reset(Protocol2_Handle_t *prtcl2);
 static void DL_IdleState(Protocol2_Handle_t *prtcl2);
 static void DL_Reception_PT_State(Protocol2_Handle_t *prtcl2);
-static void DL_Reception_MSG_State(Protocol2_Handle_t *prtcl2);
+static void DL_Reception_Payload_State(Protocol2_Handle_t *prtcl2);
 static void DL_ProcessingState(Protocol2_Handle_t *prtcl2);
 
 static void DelayedSendig(Protocol2_Handle_t *prtcl2);
+
+static uint8_t CheckSumXOR(uint8_t *pt, uint8_t pt_symbol, uint8_t *data, size_t data_length);
 
 /**
  * Таблица функций состояний КА DL-канала
@@ -28,7 +30,7 @@ static void DelayedSendig(Protocol2_Handle_t *prtcl2);
 void (*DL_State_Table[])(Protocol2_Handle_t *prtcl2) = {
     [PRTCL2_DL_IDLE_STATE] = DL_IdleState,
     [PRTCL2_DL_RECEPTION_PT_STATE] = DL_Reception_PT_State,
-    [PRTCL2_DL_RECEPTION_MSG_STATE] = DL_Reception_MSG_State,
+    [PRTCL2_DL_RECEPTION_PAYLOAD_STATE] = DL_Reception_Payload_State,
     [PRTCL2_DL_PROCESSING_STATE] = DL_ProcessingState};
 
 /**
@@ -36,7 +38,7 @@ void (*DL_State_Table[])(Protocol2_Handle_t *prtcl2) = {
  * @param prtcl2 ссылка на структуру данных протокола Protocol2_Handle_t
  * @return None
 */
-void Protocol2Init(Protocol2_Handle_t *prtcl2)
+void Protocol2_Init(Protocol2_Handle_t *prtcl2)
 {
     /* Down-link канал */
     prtcl2->dl.state = PRTCL2_DL_IDLE_STATE;
@@ -50,7 +52,7 @@ void Protocol2Init(Protocol2_Handle_t *prtcl2)
  * @param prtcl2 ссылка на структуру данных протокола Protocol2_Handle_t
  * @return None
 */
-void Protocol2Loop(Protocol2_Handle_t *prtcl2)
+void Protocol2_Loop(Protocol2_Handle_t *prtcl2)
 {
     /* Если ожидание конца пакета превышено - сброс КА */
     if (prtcl2->VGetTick_ms() - prtcl2->dl.ts >= prtcl2->dl.timeout)
@@ -65,7 +67,7 @@ void Protocol2Loop(Protocol2_Handle_t *prtcl2)
  * @param pt строка заголовка пакета
  * @param data данные в виде строки (поля данных разделены символом запятой ',')
  */
-void Protocol2SendPKG(Protocol2_Handle_t *prtcl2, char *pt, char *data)
+void Protocol2_SendPKG(Protocol2_Handle_t *prtcl2, char *pt, char *data)
 {
     /* Сборка пакета */
     sprintf((char *)pkg, "%c%s%c%s%c%c",
@@ -139,7 +141,7 @@ static void DL_Reception_PT_State(Protocol2_Handle_t *prtcl2)
     {
         uint8_t c = prtcl2->VPortRead();
         if (c == PRTCL2_PT_SYMBOL)
-            prtcl2->dl.state = PRTCL2_DL_RECEPTION_MSG_STATE;
+            prtcl2->dl.state = PRTCL2_DL_RECEPTION_PAYLOAD_STATE;
         else if ((c == PRTCL2_END_PKG_CR) || (c == PRTCL2_END_PKG_LF))
         {
             /* Ошибка структуры пакета -> сброс в idle */
@@ -157,12 +159,12 @@ static void DL_Reception_PT_State(Protocol2_Handle_t *prtcl2)
 }
 
 /**
- * @brief Функция состояния PRTCL2_DL_RECEPTION_MSG_STATE.
+ * @brief Функция состояния PRTCL2_DL_RECEPTION_PAYLOAD_STATE.
  * Считывание сообщения пакета (то что лежит после поля типа пакета).
  * @param prtcl2 ссылка на структуру данных протокола Protocol2_Handle_t
  * @return None
 */
-static void DL_Reception_MSG_State(Protocol2_Handle_t *prtcl2)
+static void DL_Reception_Payload_State(Protocol2_Handle_t *prtcl2)
 {
     if (prtcl2->VPortAvailable())
     {
@@ -208,4 +210,35 @@ static void DL_ProcessingState(Protocol2_Handle_t *prtcl2)
         }
     }
     prtcl2->dl.state = PRTCL2_DL_IDLE_STATE;
+}
+
+/**
+ * @brief Процедура вычсиления контрольной суммы пакета.
+ * Алгоритм вычисления контрольной суммы - это XOR всех байтов и символов между началом пакета '$' и концом блока данных '*':
+ * $ pt---pt_symbol---data *
+ * @param pt строка типа пакета
+ * @param pt_symbol символ разделения типа пакета и блока данных ('$')
+ * @param data массив блока данных (строка или байтовый массив)
+ * @param data_length длина фрагмента
+ * @return байт контрольной суммы
+ */
+static uint8_t CheckSumXOR(uint8_t *pt, uint8_t pt_symbol, uint8_t *data, size_t data_length)
+{
+    uint8_t checksum = 0;
+    
+    /* Контрольная сумма от заголовка пакета */
+    size_t pt_length = strlen((char *)pt);
+    for (int i = 0; i < pt_length; i++)
+    {
+        checksum = checksum ^ pt[i];
+    }
+    /* + символ разделения */
+    checksum = checksum ^ pt_symbol;
+    /* + сумма байтов блока данных */
+    for (int i = 0; i < data_length; i++)
+    {
+        checksum = checksum ^ data[i];
+    }
+    
+    return checksum;
 }

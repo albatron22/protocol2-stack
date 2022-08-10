@@ -30,11 +30,11 @@ int main()
     prtcl_2.VPortRead = SerialRead;
     prtcl_2.VPortClean = SerialClean;
     prtcl_2.VGetTick_ms = Timestamp;
-    Protocol2Init(&prtcl_2);
+    Protocol2_Init(&prtcl_2);
 
     while (true)
     {
-        Protocol2Loop(&prtcl_2);
+        Protocol2_Loop(&prtcl_2);
 
         if(rx_flag)
         {
