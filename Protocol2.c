@@ -3,13 +3,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+//#define DEBUG_PRINT
+
 /**
  * Специальные символы пакетов
-*/
+ */
 const char PRTCL2_START_SYMBOL = '$'; // символ начала пакета
 const char PRTCL2_PT_SYMBOL = '$';    // символ окончания поля типа пакета
-const char PRTCL2_END_PKG_CR = '\r';   // первый символ окончания пакета <CR>
-const char PRTCL2_END_PKG_LF = '\n';   // второй символ окончания пакета <LF>
+const char PRTCL2_CS_SYMBOL = '*';    // символ окончания блока данных - разделения блока данных и байта контрольной суммы
+const char PRTCL2_END_PKG_CR = '\r';  // первый символ окончания пакета <CR>
+const char PRTCL2_END_PKG_LF = '\n';  // второй символ окончания пакета <LF>
 
 uint8_t pkg[512] = {0};
 bool dataIsSent = false;
@@ -18,6 +21,7 @@ static void DL_Reset(Protocol2_Handle_t *prtcl2);
 static void DL_IdleState(Protocol2_Handle_t *prtcl2);
 static void DL_Reception_PT_State(Protocol2_Handle_t *prtcl2);
 static void DL_Reception_Payload_State(Protocol2_Handle_t *prtcl2);
+static void DL_CheckSumState(Protocol2_Handle_t *prtcl2);
 static void DL_ProcessingState(Protocol2_Handle_t *prtcl2);
 
 static void DelayedSendig(Protocol2_Handle_t *prtcl2);
@@ -26,7 +30,7 @@ static uint8_t CheckSumXOR(uint8_t *pt, uint8_t pt_symbol, uint8_t *data, size_t
 
 /**
  * Таблица функций состояний КА DL-канала
-*/
+ */
 void (*DL_State_Table[])(Protocol2_Handle_t *prtcl2) = {
     [PRTCL2_DL_IDLE_STATE] = DL_IdleState,
     [PRTCL2_DL_RECEPTION_PT_STATE] = DL_Reception_PT_State,
@@ -37,7 +41,7 @@ void (*DL_State_Table[])(Protocol2_Handle_t *prtcl2) = {
  * @brief Инициализация стека протокола
  * @param prtcl2 ссылка на структуру данных протокола Protocol2_Handle_t
  * @return None
-*/
+ */
 void Protocol2_Init(Protocol2_Handle_t *prtcl2)
 {
     /* Down-link канал */
@@ -51,7 +55,7 @@ void Protocol2_Init(Protocol2_Handle_t *prtcl2)
  * @brief Функция обработки стека протокола
  * @param prtcl2 ссылка на структуру данных протокола Protocol2_Handle_t
  * @return None
-*/
+ */
 void Protocol2_Loop(Protocol2_Handle_t *prtcl2)
 {
     /* Если ожидание конца пакета превышено - сброс КА */
@@ -75,9 +79,9 @@ void Protocol2_SendPKG(Protocol2_Handle_t *prtcl2, char *pt, char *data)
             data,
             PRTCL2_END_PKG_CR, PRTCL2_END_PKG_LF);
     /**
-     * Отправка данных через виртуальный порт. Если функ. не вернула 0 (значит порт занят) -> 
+     * Отправка данных через виртуальный порт. Если функ. не вернула 0 (значит порт занят) ->
      * отложенная отправка
-    */
+     */
     if (prtcl2->VPortSendData(pkg) != 0)
         dataIsSent = true;
 }
@@ -99,7 +103,7 @@ static void DelayedSendig(Protocol2_Handle_t *prtcl2)
  * @brief Сброс буферов полей
  * @param prtcl2 ссылка на структуру данных протокола Protocol2_Handle_t
  * @return None
-*/
+ */
 static void DL_Reset(Protocol2_Handle_t *prtcl2)
 {
     prtcl2->dl.indx_pt = 0;
@@ -112,7 +116,7 @@ static void DL_Reset(Protocol2_Handle_t *prtcl2)
  * @brief Функция состояния PRTCL2_DL_IDLE_STATE
  * @param prtcl2 ссылка на структуру данных протокола Protocol2_Handle_t
  * @return None
-*/
+ */
 static void DL_IdleState(Protocol2_Handle_t *prtcl2)
 {
     if (!prtcl2->dl.enable)
@@ -134,7 +138,7 @@ static void DL_IdleState(Protocol2_Handle_t *prtcl2)
  * Считывание типа пакета.
  * @param prtcl2 ссылка на структуру данных протокола Protocol2_Handle_t
  * @return None
-*/
+ */
 static void DL_Reception_PT_State(Protocol2_Handle_t *prtcl2)
 {
     if (prtcl2->VPortAvailable())
@@ -160,10 +164,10 @@ static void DL_Reception_PT_State(Protocol2_Handle_t *prtcl2)
 
 /**
  * @brief Функция состояния PRTCL2_DL_RECEPTION_PAYLOAD_STATE.
- * Считывание сообщения пакета (то что лежит после поля типа пакета).
+ * Считывание блока полезных данных (то что лежит после поля типа пакета).
  * @param prtcl2 ссылка на структуру данных протокола Protocol2_Handle_t
  * @return None
-*/
+ */
 static void DL_Reception_Payload_State(Protocol2_Handle_t *prtcl2)
 {
     if (prtcl2->VPortAvailable())
@@ -172,8 +176,8 @@ static void DL_Reception_Payload_State(Protocol2_Handle_t *prtcl2)
         if (c == PRTCL2_END_PKG_LF)
         {
             prtcl2->dl.state = PRTCL2_DL_PROCESSING_STATE;
-            /* Можем сразу вызвать процедуру обработки пакета */
-            DL_ProcessingState(prtcl2);
+            /* Можем сразу вызвать процедуру проверка контрольной суммы пакета */
+            DL_CheckSumState(prtcl2);
         }
         else if ((c == PRTCL2_START_SYMBOL) || (c == PRTCL2_PT_SYMBOL))
         {
@@ -192,12 +196,62 @@ static void DL_Reception_Payload_State(Protocol2_Handle_t *prtcl2)
 }
 
 /**
- * @brief Функция состояния PRTCL2_DL_PROCESSING_STATE. В цикле 
+ * @brief Вычисление контрольной суммы пакета и сверка его с принятым.
+ * Контрольная сумма содержится в одном массиве с блоком полезных данных
+ * в самом его конце. Последние два байта массива блока полезных данных -
+ * символ окончания блока данных '*' и байт коньольной суммы.
+ * @param prtcl2 ссылка на структуру данных протокола Protocol2_Handle_t
+ * @return None
+ */
+static void DL_CheckSumState(Protocol2_Handle_t *prtcl2)
+{
+    uint8_t checksum_pkg = 0;
+
+    if (prtcl2->dl.indx_msg >= 2) // хотя бы два байта - символ разделения '*' и байт cs
+    {
+        prtcl2->dl.indx_msg--;                              // смещаемся на байт контрольной суммы
+        checksum_pkg = prtcl2->dl.msg[prtcl2->dl.indx_msg]; // читаем байт контрольной суммы
+        prtcl2->dl.msg[prtcl2->dl.indx_msg] = '\0';         // очищаем байт
+        prtcl2->dl.indx_msg--;                              // смещаемся на байт символа разделения чтобы получить длину блока данных
+        prtcl2->dl.msg[prtcl2->dl.indx_msg] = '\0';         // очищаем байт. Теперь в массиве блока данных нет лишних байтов
+
+        /* Сверка контрольной суммы */
+        uint8_t _checksum = CheckSumXOR(prtcl2->dl.pt, PRTCL2_PT_SYMBOL, prtcl2->dl.msg, prtcl2->dl.indx_msg);
+        if (_checksum == checksum_pkg) // checksum OK
+        {
+#ifdef DEBUG_PRINT
+            printf("Checksum OK!\r\n");
+#endif
+            prtcl2->dl.state = PRTCL2_DL_PROCESSING_STATE;
+            /* Можем сразу вызвать процедуру проверка обработки пакета */
+            DL_ProcessingState(prtcl2);
+        }
+        else // checksum NOK
+        {
+#ifdef DEBUG_PRINT
+            printf("Checksum NOK!\r\n");
+#endif
+            /* Ошибка проверки котнрольной суммы -> сброс в idle */
+            prtcl2->dl.state = PRTCL2_DL_IDLE_STATE;
+        }
+    }
+    else
+    {
+#ifdef DEBUG_PRINT
+        printf("Checksum ERROR!\r\n");
+#endif
+        /* Ошибка структуры пакета -> сброс в idle */
+        prtcl2->dl.state = PRTCL2_DL_IDLE_STATE;
+    }
+}
+
+/**
+ * @brief Функция состояния PRTCL2_DL_PROCESSING_STATE. В цикле
  * происходит поиск обработчика по зарегистрированным пакетам,
  * соответствущему принятому типу пакета.
  * @param prtcl2 ссылка на структуру данных протокола Protocol2_Handle_t
  * @return None
-*/
+ */
 static void DL_ProcessingState(Protocol2_Handle_t *prtcl2)
 {
     for (size_t i = 0; i < prtcl2->dl.num_of_pkg; i++)
@@ -225,7 +279,7 @@ static void DL_ProcessingState(Protocol2_Handle_t *prtcl2)
 static uint8_t CheckSumXOR(uint8_t *pt, uint8_t pt_symbol, uint8_t *data, size_t data_length)
 {
     uint8_t checksum = 0;
-    
+
     /* Контрольная сумма от заголовка пакета */
     size_t pt_length = strlen((char *)pt);
     for (int i = 0; i < pt_length; i++)
@@ -239,6 +293,6 @@ static uint8_t CheckSumXOR(uint8_t *pt, uint8_t pt_symbol, uint8_t *data, size_t
     {
         checksum = checksum ^ data[i];
     }
-    
+
     return checksum;
 }

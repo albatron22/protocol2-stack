@@ -16,7 +16,7 @@
 
 ```
 $[TYPE]$[var_1,...,var_n]*<CS><CR><LF>
-|  PT  |     PAYLOAD    |
+|  PT  |     PAYLOAD     |
 $[TYPE]$<..binary data..>*<CS><CR><LF>
 ```
 

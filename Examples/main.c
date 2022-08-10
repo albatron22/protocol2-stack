@@ -17,7 +17,7 @@ uint32_t Timestamp();
 
 //////////////////////////////////////////
 //////////////////////////////////////////
-uint8_t rx_buffer[] = "$PT2$100,200,300\r\n";
+uint8_t rx_buffer[] = "$PT1$sd*\x62\r\n$PT2$30,50,-40*\x3D\r\n";
 size_t indx_read = 0;
 bool rx_flag = false;
 

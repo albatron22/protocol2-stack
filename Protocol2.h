@@ -32,6 +32,7 @@ extern "C"
                 PRTCL2_DL_IDLE_STATE = 0,          // ожидание прихода стартового символа
                 PRTCL2_DL_RECEPTION_PT_STATE,      // считывание заголовка - типа пакета
                 PRTCL2_DL_RECEPTION_PAYLOAD_STATE, // считывание блока полезных пакета
+                PRTCL2_DL_CHECKSUM_STATE,          // Вычисление контрольной суммы пакета и сверка его с принятым
                 PRTCL2_DL_PROCESSING_STATE         // обработка пакета
             } state;                               // состояние КА DL-канала
 
