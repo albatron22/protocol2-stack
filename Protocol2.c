@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-//#define DEBUG_PRINT
+#define DEBUG_PRINT
 
 /**
  * Специальные символы пакетов
@@ -259,7 +259,7 @@ static void DL_ProcessingState(Protocol2_Handle_t *prtcl2)
         if (!strncmp((const char *)prtcl2->dl.pt, prtcl2->dl.pkg[i].type, strlen(prtcl2->dl.pkg[i].type)))
         {
             /* Вызов обработчика пакета */
-            prtcl2->dl.pkg[i].CallBack_pkg(prtcl2->dl.msg);
+            prtcl2->dl.pkg[i].CallBack_pkg(prtcl2->dl.msg, prtcl2->dl.indx_msg);
             break;
         }
     }

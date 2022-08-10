@@ -4,7 +4,7 @@
 //#include "main.h"
 #include <stdint.h>
 
-void PT1_PKG_CallBack(uint8_t *msg);
-void PT2_PKG_CallBack(uint8_t *msg);
+void PT1_PKG_CallBack(uint8_t *data, size_t data_length);
+void PT2_PKG_CallBack(uint8_t *data, size_t data_length);
 
 #endif

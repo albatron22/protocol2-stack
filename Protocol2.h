@@ -12,8 +12,8 @@ extern "C"
 
     typedef struct Protocol2_Package_Struct
     {
-        char *type;                         // Тип пакета (дескриптор)
-        void (*CallBack_pkg)(uint8_t *msg); // call-back функция обработки сообщения по типу пакета
+        char *type;                                              // Тип пакета (дескриптор)
+        void (*CallBack_pkg)(uint8_t *data, size_t data_legnth); // call-back функция обработки сообщения по типу пакета
 
     } Protocol2_Package_t;
 
