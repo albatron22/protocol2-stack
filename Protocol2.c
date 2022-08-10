@@ -24,8 +24,6 @@ static void DL_Reception_Payload_State(Protocol2_Handle_t *prtcl2);
 static void DL_CheckSumState(Protocol2_Handle_t *prtcl2);
 static void DL_ProcessingState(Protocol2_Handle_t *prtcl2);
 
-static void DelayedSendig(Protocol2_Handle_t *prtcl2);
-
 static uint8_t CheckSumXOR(uint8_t *pt, uint8_t pt_symbol, uint8_t *data, size_t data_length);
 
 /**
@@ -63,40 +61,53 @@ void Protocol2_Loop(Protocol2_Handle_t *prtcl2)
         prtcl2->dl.state = PRTCL2_DL_IDLE_STATE;
 
     DL_State_Table[prtcl2->dl.state](prtcl2);
-    DelayedSendig(prtcl2);
 }
 
 /**
- * @brief Отправка пакета, собранного в соответствии с описанием протокола
+ * @brief Функция создания пакета в соответствии с правилами протокола.
+ * @param pkg массив размезения пакета
  * @param pt строка заголовка пакета
- * @param data данные в виде строки (поля данных разделены символом запятой ',')
+ * @param data полезные данные в произвольном формате
+ * @param data_length размер полезных данных в байтах
+ * @return размер созданного пакета в байтах. Если 0 - ошибка
  */
-void Protocol2_SendPKG(Protocol2_Handle_t *prtcl2, char *pt, char *data)
+size_t Protocol2_CreatePKG(Protocol2_Handle_t *prtcl2, uint8_t *pkg, uint8_t *pt, uint8_t *data, size_t data_length)
 {
-    /* Сборка пакета */
-    sprintf((char *)pkg, "%c%s%c%s%c%c",
-            PRTCL2_START_SYMBOL, pt, PRTCL2_PT_SYMBOL,
-            data,
-            PRTCL2_END_PKG_CR, PRTCL2_END_PKG_LF);
-    /**
-     * Отправка данных через виртуальный порт. Если функ. не вернула 0 (значит порт занят) ->
-     * отложенная отправка
-     */
-    if (prtcl2->VPortSendData(pkg) != 0)
-        dataIsSent = true;
-}
+    size_t pkg_size = 0;
+    size_t pt_length = strlen(pt);
 
-/**
- * @brief Отложенная отправка пакета
- * @param prtcl2 ссылка на структуру данных протокола Protocol2_Handle_t
- */
-static void DelayedSendig(Protocol2_Handle_t *prtcl2)
-{
-    if (dataIsSent)
-    {
-        if (prtcl2->VPortSendData(pkg) == 0)
-            dataIsSent = false;
-    }
+    if (data_length > (PRTCL2_DATA_MAX_LENGTH - 2) || pt_length > PRTCL2_PT_MAX_LENGTH || pt_length == 0)
+        return 0;
+
+    /**
+     * Размер массива пакета должен вместить в себя все поля:
+     * размер заголовка (pt)
+     * размер блока данных (data_length)
+     * служебные поля
+     */
+    if (sizeof(pkg) >= (pt_length + data_length + PRTCL2_PKG_MIN_LENGTH))
+        return 0;
+
+    /* Сборка заголовка пакета $pt$ */
+    sprintf((char *)pkg, "%c%s%c", PRTCL2_START_SYMBOL, pt, PRTCL2_PT_SYMBOL);
+    pkg_size = strlen(pkg);
+    /* создаем указатель на следующий после заголовка байт (туда и копируем блок данных) */
+    uint8_t *pkg_dst = pkg + pkg_size;
+    /* копируем блок данных. Получаем $pt$data */
+    memcpy(pkg_dst, data, data_length);
+    pkg_size += data_length;
+    /* Высиление контрольной суммы */
+    uint8_t cs = CheckSumXOR(pt, PRTCL2_PT_SYMBOL, data, data_length);
+    pkg[pkg_size] = '*'; //символ окончания блока данных
+    pkg_size++;
+    pkg[pkg_size] = cs; // добавляем байт контрольной суммы
+    pkg_size++;
+    pkg[pkg_size] = '\r';
+    pkg_size++;
+    pkg[pkg_size] = '\n';
+    pkg_size++; // окончательный размер пакета
+    
+    return pkg_size;
 }
 
 /**

@@ -17,7 +17,7 @@ uint32_t Timestamp();
 
 //////////////////////////////////////////
 //////////////////////////////////////////
-uint8_t rx_buffer[] = "$PT1$\x11\r\n$PT2$30,50,-40*\x3D\r\n";
+uint8_t rx_buffer[] = "$PT1$*\x11\r\n$PT2$30,50,-40*\x3D\r\n";
 size_t indx_read = 0;
 bool rx_flag = false;
 
@@ -31,6 +31,14 @@ int main()
     prtcl_2.VPortClean = SerialClean;
     prtcl_2.VGetTick_ms = Timestamp;
     Protocol2_Init(&prtcl_2);
+
+    /* Проверка генерации сообщения */
+    uint8_t pt[] = "TELEM";
+    uint8_t data[] = "prsd564c";
+    uint8_t pkg[64] = {0};
+
+    size_t pkg_size = Protocol2_CreatePKG(&prtcl_2, pkg, pt, data, strlen(data));
+    printf("%sSize: %d\r\n\r\n", pkg, pkg_size);
 
     while (true)
     {
