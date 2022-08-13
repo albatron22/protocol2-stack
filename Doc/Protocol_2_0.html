@@ -27,6 +27,41 @@
 	color: var(--vscode-editorError-foreground);
 }
 
+/* From extension ms-toolsai.jupyter */
+/* These classnames are inherited from bootstrap, but are present in most notebook renderers */
+
+.alert {
+    width: auto;
+    padding: 1em;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+.alert > *:last-child {
+    margin-bottom: 0;
+}
+#preview > .alert:last-child {
+    /* Prevent this being set to zero by the default notebook stylesheet */
+    padding-bottom: 1em;
+}
+
+.alert-success {
+    /* Note there is no suitable color available, so we just copy "info" */
+    background-color: var(--theme-info-background);
+    color: var(--theme-info-foreground);
+}
+.alert-info {
+    background-color: var(--theme-info-background);
+    color: var(--theme-info-foreground);
+}
+.alert-warning {
+    background-color: var(--theme-warning-background);
+    color: var(--theme-warning-foreground);
+}
+.alert-danger {
+    background-color: var(--theme-error-background);
+    color: var(--theme-error-foreground);
+}
+
 </style>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.css" integrity="sha384-yFRtMMDnQtDRO8rLpMIKrtPCD5jdktao2TV19YiZYWMDkUR5GQZR/NOVTdquEx1j" crossorigin="anonymous">
 <link href="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.css" rel="stylesheet" type="text/css">
@@ -43,621 +78,88 @@
 .task-list-item { list-style-type: none; } .task-list-item-checkbox { margin-left: -20px; vertical-align: middle; }
 </style>
         
-        <script src="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.js"></script>
-        
     </head>
     <body class="vscode-body vscode-light">
         <h1 id="протокол-взаимодействия-уровней-системы-верхний-нижний-описание-структуры">Протокол взаимодействия уровней системы (верхний, нижний). Описание структуры.</h1>
-<p><em>Примечание 1</em>. Данный протокол является развитием протокола взаимодействия верхнего и нижненго уровня подводного аппарата (вспоминай бессоные мартовские ночи...).</p>
-<ul>
-<li>
-<p><strong>Версия</strong>: 2.0</p>
-</li>
-<li>
-<p>Аппаратные настройки:</p>
-<ul>
-<li>Интерфейс связи: UART
-<ul>
-<li>Порт UART CONTROL_PCB: <code>USART2</code></li>
-<li>Порт UART HL: <code>/ttyTHS1</code></li>
-</ul>
-</li>
-<li>Параметры порта UART:
-<ul>
-<li>Скорсть: -</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>
-<p><a href="#%D0%BE%D0%B1%D1%89%D0%B8%D0%B9-%D1%84%D0%BE%D1%80%D0%BC%D0%B0%D1%82-%D0%BF%D0%B0%D0%BA%D0%B5%D1%82%D0%BE%D0%B2">Общий формат пакетов</a></p>
-</li>
-<li>
-<p><a href="#%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0-%D0%BA%D0%BE%D0%BC%D0%B0%D0%BD%D0%B4-dl-%D0%BA%D0%B0%D0%BD%D0%B0%D0%BB%D0%B0">Система команд DL-канала</a></p>
-<ul>
-<li><a href="#%D0%B7%D0%B0%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5-%D0%BB%D0%B8%D0%BD%D0%B5%D0%B9%D0%BD%D0%BE%D0%B3%D0%BE-%D0%B4%D0%B2%D0%B8%D0%B6%D0%B5%D0%BD%D0%B8%D1%8F%D0%B3%D0%BB%D0%B0%D0%B2%D0%BD%D0%BE%D0%B3%D0%BE-%D0%B2%D0%B5%D0%BA%D1%82%D0%BE%D1%80%D0%B0-%D1%82%D1%8F%D0%B3%D0%B8-force">Задание линейного движения(главного вектора тяги) <code>FORCE</code></a></li>
-<li><a href="#%D0%B7%D0%B0%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5-%D0%B3%D0%BB%D0%B0%D0%B2%D0%BD%D0%BE%D0%B3%D0%BE-%D0%B2%D0%B5%D0%BA%D1%82%D0%BE%D1%80%D0%B0-%D0%BC%D0%BE%D0%BC%D0%B5%D0%BD%D1%82%D0%B0-mom">Задание главного вектора момента <code>MOM</code></a></li>
-<li><a href="#%D0%B7%D0%B0%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5-%D1%83%D0%B3%D0%BB%D0%BE%D0%B2%D0%BE%D0%B9-%D1%81%D0%BA%D0%BE%D1%80%D0%BE%D1%81%D1%82%D0%B8-%D0%B2%D1%80%D0%B0%D1%89%D0%B5%D0%BD%D0%B8%D1%8F-%D0%BF%D0%B0-wr">Задание угловой скорости вращения ПА <code>WR</code></a></li>
-<li><a href="#%D1%83%D1%81%D1%82%D0%B0%D0%BD%D0%BE%D0%B2%D0%BA%D0%B0-%D1%83%D1%80%D0%BE%D0%B2%D0%BD%D1%8F-%D1%8F%D1%80%D0%BA%D0%BE%D1%81%D1%82%D0%B8-%D1%84%D0%BE%D0%BD%D0%B0%D1%80%D0%B5%D0%B9-lamp">Установка уровня яркости фонарей <code>LAMP</code></a></li>
-<li><a href="#%D0%B2%D1%80%D0%B0%D1%89%D0%B5%D0%BD%D0%B8%D0%B5-%D0%BA%D0%B0%D0%BC%D0%B5%D1%80%D1%8B-cam">Вращение камеры <code>CAM</code></a></li>
-<li><a href="#%D1%81%D0%B6%D0%B0%D1%82%D0%B8%D0%B5-%D1%81%D1%85%D0%B2%D0%B0%D1%82%D0%B0-grip">Сжатие схвата <code>GRIP</code></a></li>
-<li><a href="#%D0%B2%D1%8B%D0%B1%D0%BE%D1%80-%D1%80%D0%B5%D0%B6%D0%B8%D0%BC%D0%B0-mode">Выбор режима <code>MODE</code></a></li>
-<li><a href="#%D0%B0%D0%BA%D1%82%D0%B8%D0%B2%D0%B0%D1%86%D0%B8%D1%8F-%D1%80%D0%B5%D0%B3%D1%83%D0%BB%D1%8F%D1%82%D0%BE%D1%80%D0%B0-%D0%BF%D0%BE-%D0%BF%D0%BE%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D1%8E-reg">Активация регулятора по положению <code>REG</code></a></li>
-<li><a href="#%D0%BF%D0%B5%D1%80%D0%B5%D0%B2%D0%BE%D0%B4-%D0%BF%D0%B0-%D0%B2-root-%D1%80%D0%B5%D0%B6%D0%B8%D0%BC-root">Перевод ПА в root-режим <code>@ROOT</code></a></li>
-</ul>
-</li>
-<li>
-<p><a href="#up-link-%D0%BA%D0%B0%D0%BD%D0%B0%D0%BB%D0%B0---%D0%BF%D0%B5%D1%80%D0%B5%D0%B4%D0%B0%D1%87%D0%B0-%D1%82%D0%B5%D0%BB%D0%B5%D0%BC%D0%B5%D1%82%D1%80%D0%B8%D0%B8-telem">Up link канала - передача телеметрии <code>TELEM</code></a></p>
-</li>
-<li>
-<p><a href="#rov-command-line-interface-rov-cli">ROV Command Line Interface (rov-cli)</a></p>
-</li>
-</ul>
-<p>Связь двухсторонняя, асинхронная. Со стороны верхнего уровня (HL) передаются команды управления (Down Link канал - DL), со стороны нижнего уровяни (LL) CONTROL_PCB (Up Link канал - UL) показания датчиков (<strong>телеметрия</strong>) и ответы на запросы.</p>
+<p><em>Данный протокол является развитием протокола взаимодействия верхнего и нижненго уровня подводного аппарата (вспоминай бессоные мартовские ночи 2021 года...).</em></p>
+<p>Цель - создать универсальный стек протокола взаимодействия уровней управления внутри одной системы. Обычно различают <strong>верхний (HL)</strong> и <strong>нижний (LL)</strong> уровни системы, между которомы просихордит обмен данными (команды управления, телеметрия и др.). К верхнему уровню может относиться компьютер, встраиваемый микрокомпьютер (одноплатник) или микроконтроллер. К нижнему уровню чаще всего относят микроконтроллер, который отвечает за управление системой на нижнем, аппаратном уровне. Формат данных текстовый (ASCII симоволы). Пользователь сам определяет формат и структуру блока данных, следующих за заголовком. Данные сообщений должны анализироваться в call-back функциях для каждого типа пакета.</p>
+<p>Связь двухсторонняя, асинхронная. Со стороны верхнего уровня (HL) передаются команды управления и запросы (Down Link канал - DL), со стороны нижнего (LL) уровня (Up Link канал - UL), например, показания датчиков (<strong>телеметрия</strong>) или ответы на запросы.</p>
 <h2 id="общий-формат-пакетов">Общий формат пакетов</h2>
-<p>Пакеты сообщение имеют определённую структуру с символами начала, конца сообщения и полями . Данные передаются в преимущественно символьном виде (ASCII), то есть сообщения представляет собой строку. В пакете могут передаваться сообщения разного характера, который определяется в заголовке пакета - <strong>тип пакета</strong>.</p>
-<p><em>Примечание.</em> Версия протокола 2.0 основана на открытых протоколах Wialon IPS и NMEA.</p>
-<p>Струкутура пакета:</p>
-<pre><code><code><div>$&lt;TYPE&gt;$&lt;var_1,..,var_n&gt;&lt;CR&gt;&lt;LF&gt;
+<p>Версия протокола 2.0 основана на открытых протоколах Wialon IPS и NMEA.</p>
+<p>Пакеты имеют определённую структуру с символами начала <code>'$'</code> и конца пакета <code>\r\n</code> и полями заголовка пакета и блока данных между ними. В пакете могут передаваться данные разного характера, они определяется <strong>типом пакета</strong> в заголовке. Данные передаются в произвольном формате, которые определяется пользователем. Данные должны быть представлены <strong>символьном</strong> виде (ASCII), представляя собой форматированную строку. Для контроля целостности пакета используется простая контрольная сумма. Она считается для байт пакета между началом <code>'$'</code> и концом блока данных <code>'*'</code>, непосредственно после которого встраивается в пакет.</p>
+<p><strong>Струкутура пакета:</strong></p>
+<p><img src="file:///d:\User\Documents\c-cpp-workspace\protocol2-stack\Doc\pkg.drawio.png" alt="pkg"></p>
+<pre><code><code><div>$[TYPE]$[var_1,...,var_n]*&lt;CS&gt;&lt;CR&gt;&lt;LF&gt;
+|  PT  |   DATA BLOCK    | CS |
+$[TYPE]$&lt;..binary data..&gt;*&lt;CS&gt;&lt;CR&gt;&lt;LF&gt;
 </div></code></code></pre>
+<p><strong>PT (Package Type)</strong> - заголовок пакета</p>
+<p><strong>DATA BLOCK</strong> - блок полезных данных пакета</p>
+<p><strong>CS</strong> - контрольная сумма пакета</p>
+<p>Ниже приведено детальное описание полей пакета сообщения.</p>
 <table>
 <thead>
 <tr>
 <th>Поле</th>
 <th>Описание</th>
 <th>Формат</th>
+<th>Размер, байт</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>$</code></td>
-<td>Символ начала пакета (<code>PRTCL2_START_SYMBOL</code>). По умолчанию импользуется символ <code>$</code>, но может быть переопределён на дургой символ</td>
+<td><code>'$'</code></td>
+<td>Символ начала пакета (<code>PRTCL2_START_SYMBOL</code>). По умолчанию импользуется символ <code>'$'</code>. <em>Может быть переопределён на другой символ</em></td>
 <td>ASCII-символ</td>
+<td>1</td>
 </tr>
 <tr>
-<td><code>&lt;TYPE&gt;</code></td>
+<td><code>[TYPE]</code></td>
 <td>Тип пакета (<code>PRTCL2_PKG_TYPE</code>)</td>
 <td>ASCII-строка</td>
+<td>1..32</td>
 </tr>
 <tr>
-<td><code>$</code></td>
-<td>Разделитель поля типа пакета и непосредественно содержания сообщения пакета (<code>PRTCL2_PT_SYMBOL</code>). Также может быть переропределён другим символом (например, в NMEA это запятая <code>,</code>)</td>
-<td></td>
+<td><code>'$'</code></td>
+<td>Разделитель полей типа пакета и блока данных (<code>PRTCL2_PT_SYMBOL</code>). <em>Также может быть переропределён другим символом (например, в NMEA это символ запятой</em></td>
+<td>ASCII-символ</td>
+<td>1</td>
 </tr>
 <tr>
-<td><code>&lt;var_1,..,var_n&gt;</code></td>
-<td>Поле сообщения - непосредственно сами данные (сообщение), относящиеся к соответствующему заголовку. Внутри сообщения данные, если их несколько, разделяются знаком запятой <code>,</code>. <em>Данные в некоторых случаях могу отсутствовать, если заголовк считается командой</em>.</td>
-<td>ASCII-строка и бинарные данные. Если бинарные, то разделитель отсутствует</td>
+<td><code>[var_1,...,var_n]</code> или <p><code>&lt;..binary data..&gt;</code></p></td>
+<td>Блок данных, или PAYLOAD - полезная нагрузка, непосредственно данные пакета, относящиеся к соответствующему заголовку. Если формат данных символьный, то рекомендуется внутри данных использовать разделение знаком запятой <code>','</code>. Если бинарные, то разделитель не обязателен. <em>Данные в некоторых случаях могу отсутствовать, если заголовк считается командой</em>.</td>
+<td>ASCII-строка или бинарные данные</td>
+<td>0..510</td>
+</tr>
+<tr>
+<td><code>'*'</code></td>
+<td>Символ окончания блока данных. После него в пакет расположены байты контрольной суммы</td>
+<td>ASCII-символ</td>
+<td>1</td>
+</tr>
+<tr>
+<td><code>&lt;CS&gt;</code></td>
+<td>Байт контрольной суммы пакета</td>
+<td>Бинарный</td>
+<td>1</td>
 </tr>
 <tr>
 <td><code>&lt;CR&gt;&lt;LF&gt;</code></td>
 <td>Символы конца сообщения (символы переноса каректи и строки <code>\r\n</code>)</td>
 <td>Спец. символы ASCII</td>
+<td>2</td>
 </tr>
 </tbody>
 </table>
-<p>Пример сообщения (<em>без контрольной суммы CRC</em>):</p>
-<pre><code><code><div>$FORCE$10,-20,30\r\n
-$MOM$30,40,-50\r\n
+<p><em>Примеры пакетов с символьным форматом блока данных</em></p>
+<pre><code><code><div>$FORCE$10,-20,30*0x54\r\n
+$MOM$30,40,-50*0x44\r\n
 </div></code></code></pre>
-<h2 id="система-команд-dl-канала">Система команд DL-канала</h2>
-<p>В DL-канал HL отправляет команды LL. К этим командам относятся: задание линейного и вращательного движения, поворот камеры, включения фонаря и др.</p>
-<h3 id="задание-линейного-движенияглавного-вектора-тяги-force">Задание линейного движения(главного вектора тяги) <code>FORCE</code></h3>
-<p>Линейное движение задаётся вектором силы тяги относительно системы координат подводного робота (ПР). Вектор имеет три компоненты - движение вперёд-назад (Fx), вправл-влево (Fy), вверх-вниз (Fz).</p>
-<p><strong>Описание пакета:</strong></p>
-<table>
-<thead>
-<tr>
-<th>Поле</th>
-<th>Значение</th>
-<th>Формат</th>
-<th>Диапазон</th>
-<th>Ед. изм</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Заголовок</td>
-<td><code>FORCE</code></td>
-<td>ASCII-строка</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>Данные</td>
-<td><code>Fx,Fy,Fz</code></td>
-<td>Символьный формат числа. <em>Поддерживаются целочисленный формат и формат с плавающей точкой</em></td>
-<td>-</td>
-<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>Н</mtext></mrow><annotation encoding="application/x-tex">Н</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord cyrillic_fallback">Н</span></span></span></span></td>
-</tr>
-<tr>
-<td>Окончание команды</td>
-<td><code>\r\n</code></td>
-<td>Символ</td>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<p>Пример сообщения:</p>
-<pre><code><code><div>$FORCE$&lt;Fx,Fy,Fz&gt;\r\n
-$FORCE$100.01,-200.2,300\r\n
-</div></code></code></pre>
-<hr>
-<h3 id="задание-главного-вектора-момента-mom">Задание главного вектора момента <code>MOM</code></h3>
-<p>Вращательное движение задаётся главным вектором момента вращения относительно системы координат подводного робота (ПР). Вектор имеет три компоненты - (Mx), (My), (Mz).</p>
-<p><strong>Описание пакета:</strong></p>
-<table>
-<thead>
-<tr>
-<th>Поле</th>
-<th>Значение</th>
-<th>Формат</th>
-<th>Диапазон</th>
-<th>Ед. изм</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Заголовок</td>
-<td><code>MOM</code></td>
-<td>ASCII-строка</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>Данные</td>
-<td><code>Mx,My,Mz</code></td>
-<td>Символьный формат числа. <em>Поддерживаются целочисленный формат и формат с плавающей точкой</em></td>
-<td>-</td>
-<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>Н</mtext><mo>⋅</mo><mtext>м</mtext></mrow><annotation encoding="application/x-tex">Н\cdotм</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord cyrillic_fallback">Н</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord cyrillic_fallback">м</span></span></span></span></td>
-</tr>
-<tr>
-<td>Окончание команды</td>
-<td><code>\r\n</code></td>
-<td>Символ</td>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<p>Пример сообщения:</p>
-<pre><code><code><div>$MOM$&lt;Mx,My,Mz&gt;\r\n
-$MOM$10.1,20,30.33\r\n
-</div></code></code></pre>
-<hr>
-<h3 id="задание-угловой-скорости-вращения-па-wr">Задание угловой скорости вращения ПА <code>WR</code></h3>
-<p>Приведение ПА в требуемое угловое положение осуществляется вращением с заданной скоростью с джойстика. При отпускании стиков джойстика, ПА останавливается в текущем положении и стабилизируется в нём. Таким образом, угловой скоростью инкрементируется угловая ориентации ПА. В сообщении пакета передаются компоненты вектора угловой скорости <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="bold">ω</mi><mi>r</mi></msub></mrow><annotation encoding="application/x-tex">\mathbf{\omega}_r</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">ω</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.151392em;"><span style="top:-2.5500000000000003em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.02778em;">r</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> в разложении в базисе ПА: <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>ω</mi><mi>r</mi><mi>x</mi></msubsup></mrow><annotation encoding="application/x-tex">\omega_r^x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.911392em;vertical-align:-0.247em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">ω</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.664392em;"><span style="top:-2.4530000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.02778em;">r</span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight">x</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.247em;"><span></span></span></span></span></span></span></span></span></span>, <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>ω</mi><mi>r</mi><mi>y</mi></msubsup></mrow><annotation encoding="application/x-tex">\omega_r^y</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.911392em;vertical-align:-0.247em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">ω</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.664392em;"><span style="top:-2.4530000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.02778em;">r</span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.03588em;">y</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.247em;"><span></span></span></span></span></span></span></span></span></span>, <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>ω</mi><mi>r</mi><mi>z</mi></msubsup></mrow><annotation encoding="application/x-tex">\omega_r^z</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.911392em;vertical-align:-0.247em;"></span><span class="mord"><span class="mord mathdefault" style="margin-right:0.03588em;">ω</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.664392em;"><span style="top:-2.4530000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.02778em;">r</span></span></span><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathdefault mtight" style="margin-right:0.04398em;">z</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.247em;"><span></span></span></span></span></span></span></span></span></span>.</p>
-<p><strong>Описание пакета:</strong></p>
-<table>
-<thead>
-<tr>
-<th>Поле</th>
-<th>Значение</th>
-<th>Формат</th>
-<th>Диапазон</th>
-<th>Ед. изм</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Заголовок</td>
-<td><code>WR</code></td>
-<td>ASCII-строка</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>Данные</td>
-<td><code>wx,wy,wz</code></td>
-<td>Символьный формат числа. <em>Поддерживаются целочисленный формат и формат с плавающей точкой</em></td>
-<td>-</td>
-<td><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>рад</mtext><mi mathvariant="normal">/</mi><mtext>с</mtext></mrow><annotation encoding="application/x-tex">рад/с</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord cyrillic_fallback">р</span><span class="mord cyrillic_fallback">а</span><span class="mord cyrillic_fallback">д</span><span class="mord">/</span><span class="mord cyrillic_fallback">с</span></span></span></span></td>
-</tr>
-<tr>
-<td>Окончание команды</td>
-<td><code>\r\n</code></td>
-<td>Символ</td>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<p>Пример сообщения:</p>
-<pre><code><code><div>$WR$&lt;wx,wy,wz&gt;\r\n
-$WR$10.1,20,30.33\r\n
-</div></code></code></pre>
-<hr>
-<h3 id="установка-уровня-яркости-фонарей-lamp">Установка уровня яркости фонарей <code>LAMP</code></h3>
-<p>В сообщении передаётся уровень яркости пары фонарей <code>lvl1</code>, <code>lvl2</code> 0...100%. Уровень 0 отключает фонари.</p>
-<p><strong>Описание пакета:</strong></p>
-<table>
-<thead>
-<tr>
-<th>Поле</th>
-<th>Значение</th>
-<th>Формат</th>
-<th>Диапазон</th>
-<th>Ед. изм</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Заголовок</td>
-<td><code>LAMP</code></td>
-<td>ASCII-строка</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>Данные</td>
-<td><code>lvl1, lvl2</code></td>
-<td>Символьный формат числа. <em>Целочисленный формат</em></td>
-<td>0...100</td>
-<td>%</td>
-</tr>
-<tr>
-<td>Окончание команды</td>
-<td><code>\r\n</code></td>
-<td>Символ</td>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<p>Пример сообщения:</p>
-<pre><code><code><div>$LAMP$&lt;lvl1,lvl2&gt;\r\n
-$LAMP$50,80\r\n
-</div></code></code></pre>
-<hr>
-<h3 id="вращение-камеры-cam">Вращение камеры <code>CAM</code></h3>
-<p>В сообщении передаются углы поворота осей камеры.</p>
-<p><strong>Описание пакета:</strong></p>
-<table>
-<thead>
-<tr>
-<th>Поле</th>
-<th>Значение</th>
-<th>Формат</th>
-<th>Диапазон</th>
-<th>Ед. изм</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Заголовок</td>
-<td><code>CAM</code></td>
-<td>ASCII-строка</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>Данные</td>
-<td><code>c1,c2</code></td>
-<td>Символьный формат числа. <em>Целочисленный формат</em></td>
-<td>0...180</td>
-<td>градусы</td>
-</tr>
-<tr>
-<td>Окончание команды</td>
-<td><code>\r\n</code></td>
-<td>Символ</td>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<p>Пример сообщения:</p>
-<pre><code><code><div>$CAM$&lt;c1,c2&gt;\r\n
-$CAM$90,180\r\n
-</div></code></code></pre>
-<hr>
-<h3 id="сжатие-схвата-grip">Сжатие схвата <code>GRIP</code></h3>
-<p>Команда активации схвата определяется скоростью сжатия схвата (<code>a</code>) и задаётся в диапазоне -100...100, где 0 - останов.</p>
-<p><strong>Описание пакета:</strong></p>
-<table>
-<thead>
-<tr>
-<th>Поле</th>
-<th>Значение</th>
-<th>Формат</th>
-<th>Диапазон</th>
-<th>Ед. изм</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Заголовок</td>
-<td><code>GRIP</code></td>
-<td>ASCII-строка</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>Данные</td>
-<td><code>a</code></td>
-<td>Символьный формат числа. <em>Целочисленный формат</em></td>
-<td>-100...100</td>
-<td>-</td>
-</tr>
-<tr>
-<td>Окончание команды</td>
-<td><code>\r\n</code></td>
-<td>Символ</td>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<p>Пример сообщения:</p>
-<pre><code><code><div>$GRIP$&lt;a&gt;\r\n
-$GRIP$70\r\n
-</div></code></code></pre>
-<hr>
-<h3 id="выбор-режима-mode">Выбор режима <code>MODE</code></h3>
-<p>В сообщении передаётся идентификатор текущего режима. <code>0</code> - базовый режим, <code>1</code> - режим акробатик</p>
-<p><strong>Описание пакета:</strong></p>
-<table>
-<thead>
-<tr>
-<th>Поле</th>
-<th>Значение</th>
-<th>Формат</th>
-<th>Диапазон</th>
-<th>Ед. изм</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Заголовок</td>
-<td><code>MODE</code></td>
-<td>ASCII-строка</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>Данные</td>
-<td><code>mode</code></td>
-<td>Символьный формат числа. <em>Целочисленный формат</em></td>
-<td>0, 1</td>
-<td>-</td>
-</tr>
-<tr>
-<td>Окончание команды</td>
-<td><code>\r\n</code></td>
-<td>Символ</td>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<p>Пример сообщения:</p>
-<pre><code><code><div>$MODE$&lt;mode&gt;\r\n
-$MODE$1\r\n
-</div></code></code></pre>
-<hr>
-<h3 id="активация-регулятора-по-положению-reg">Активация регулятора по положению <code>REG</code></h3>
-<p>В сообщении передаётся флаг активации текущего режима. <code>0</code> - регулятор включен, <code>1</code> - регулятор отключен</p>
-<p><strong>Описание пакета:</strong></p>
-<table>
-<thead>
-<tr>
-<th>Поле</th>
-<th>Значение</th>
-<th>Формат</th>
-<th>Диапазон</th>
-<th>Ед. изм</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Заголовок</td>
-<td><code>REG</code></td>
-<td>ASCII-строка</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>Данные</td>
-<td><code>enable</code></td>
-<td>Символьный формат числа. <em>Целочисленный формат</em></td>
-<td>0, 1</td>
-<td>-</td>
-</tr>
-<tr>
-<td>Окончание команды</td>
-<td><code>\r\n</code></td>
-<td>Символ</td>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<p>Пример сообщения:</p>
-<pre><code><code><div>$REG$&lt;enable&gt;\r\n
-$REG$1\r\n
-</div></code></code></pre>
-<hr>
-<h3 id="перевод-па-в-root-режим-root">Перевод ПА в root-режим <code>@ROOT</code></h3>
-<p>В этом режиме через последовательное соединение предоставляется команданый режим управлениями система ПА через интерфейс командной строки ROV CLI. Вместе с командой передаётся пароль root-режима.</p>
-<table>
-<thead>
-<tr>
-<th>Поле</th>
-<th>Значение</th>
-<th>Формат</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Заголовок</td>
-<td><code>@ROOT</code></td>
-<td>ASCII-строка</td>
-</tr>
-<tr>
-<td>Данные</td>
-<td><code>password</code></td>
-<td>Пароль входа (<code>1111</code> по умолчанию)</td>
-</tr>
-<tr>
-<td>Окончание команды</td>
-<td><code>\r\n</code></td>
-<td>Символ</td>
-</tr>
-</tbody>
-</table>
-<p>Пример сообщения:</p>
-<pre><code><code><div>$@ROOT$&lt;password&gt;\r\n
-$@ROOT$1111\r\n
-</div></code></code></pre>
-<p>Подробнее в разделе <a href="#rov-command-line-interface-rov-cli">root-режим</a>.</p>
-<hr>
-<h2 id="up-link-канала---передача-телеметрии-telem">Up link канала - передача телеметрии <code>TELEM</code></h2>
-<p>Телеметрия передаётся одним пакетом. Формат пакета также определяется протоколом.
-Телеметрия, отправленная в UL-канале (от LL к HL) содержат обратную связь с датчиков и вычисленного угловй ориентации ПА. К датчикам относятся: IMU сенсор, датчики внешнего и внутреннего давления, датчики внешенй и внутренней температуры, уровень заряда АКБ. Вычисление углового положения происходит на стороне CONTROL_PCB. Значение углового положения определяется кватернионом собственного положения.</p>
-<p>Пакет телеметрии UL-канала представляет собой строку общего формата, в которой содержатся все возможные передаваемые данные с датчиков и оценка угловой ориентации (кватернион собственного положения - по отношению к Земле). Порядок данных строго определён. Данные следуют за заголовком пакета (типа пакета). Данные имеют числовой тип (целочисленный и вещественный).</p>
-<p><strong>Описание пакета:</strong></p>
-<table>
-<thead>
-<tr>
-<th>Поле</th>
-<th>Значение</th>
-<th>Формат</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Заголовок</td>
-<td><code>TELEM</code></td>
-<td>ASCII-строка</td>
-</tr>
-<tr>
-<td>Данные</td>
-<td><code>Q_w,Q_x,Q_y,Q_z,wx,wy,wz,ax,ay,az,hx,hy,hz,t_out,depth,v,mode,reg</code></td>
-<td>Символьный формат числа. <em>Поддерживаются целочисленный формат и формат с плавающей точкой</em></td>
-</tr>
-<tr>
-<td>Окончание команды</td>
-<td><code>\r\n</code></td>
-<td>Символ</td>
-</tr>
-</tbody>
-</table>
-<p><strong>Содержание пакета телеметрии</strong></p>
-<table>
-<thead>
-<tr>
-<th>Поле</th>
-<th>Значение</th>
-<th>Формат</th>
-<th>Диапазон</th>
-<th>Ед. изм.</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>Q_w</code></td>
-<td>Действительная часть кватерниона w</td>
-<td>Вещественное в символьном виде (<code>float</code>)</td>
-<td>-</td>
-<td>-</td>
-</tr>
-<tr>
-<td><code>Q_x</code></td>
-<td>Мнимая часть кватерниона x</td>
-<td>Вещественное в символьном виде (<code>float</code>)</td>
-<td>-</td>
-<td>-</td>
-</tr>
-<tr>
-<td><code>Q_y</code></td>
-<td>Мнимая часть кватерниона y</td>
-<td>Вещественное в символьном виде (<code>float</code>)</td>
-<td>-</td>
-<td>-</td>
-</tr>
-<tr>
-<td><code>Q_z</code></td>
-<td>Мнимая часть кватерниона z</td>
-<td>Вещественное в символьном виде (<code>float</code>)</td>
-<td>-</td>
-<td>-</td>
-</tr>
-<tr>
-<td><code>wx</code>, <code>wy</code>, <code>wz</code></td>
-<td>Показания гироскопа - значения угловой скорости вокург связанных осей ПР</td>
-<td>Вещественное в символьном виде (<code>float</code>)</td>
-<td>-</td>
-<td>град/с</td>
-</tr>
-<tr>
-<td><code>ax</code>, <code>ay</code>, <code>az</code></td>
-<td>Показания акселерометра - проекция ускорения движенгия на связанные оси ПР</td>
-<td>Вещественное в символьном виде (<code>float</code>)</td>
-<td>-</td>
-<td>g</td>
-</tr>
-<tr>
-<td><code>hx</code>, <code>hy</code>, <code>hz</code></td>
-<td>Показания магнетометра - проекция магнитного поля на связанные оси ПР</td>
-<td>Вещественное в символьном виде (<code>float</code>)</td>
-<td>-</td>
-<td>мкТл</td>
-</tr>
-<tr>
-<td><code>t_out</code></td>
-<td>Показания датчика наружней температуры</td>
-<td>Вещественное в символьном виде (<code>float</code>)</td>
-<td>-</td>
-<td>Градусы цельсия</td>
-</tr>
-<tr>
-<td><code>depth</code></td>
-<td>Глубина по показаниям датчика давления на задней панели колбы</td>
-<td>Вещественное в символьном виде (<code>float</code>)</td>
-<td>-</td>
-<td>мм</td>
-</tr>
-<tr>
-<td><code>v</code></td>
-<td>Уровень напряжения АКБ</td>
-<td>Вещественное в символьном виде (<code>float</code>)</td>
-<td>-</td>
-<td>В</td>
-</tr>
-<tr>
-<td><code>mode</code></td>
-<td>Режим управления ПА</td>
-<td>Целочисленное в символьном виде (<code>int</code>)</td>
-<td><code>0</code> - базовый, <code>1</code> - акробатик, <code>2</code> - останов</td>
-<td>-</td>
-</tr>
-<tr>
-<td><code>reg</code></td>
-<td>Режим работы регулятора</td>
-<td>Целочисленное в символьном виде (<code>int</code>)</td>
-<td><code>0</code> - ВЫКЛ, <code>1</code> - ВКЛ</td>
-<td>-</td>
-</tr>
-</tbody>
-</table>
-<p>Пример сообщения:</p>
-<pre><code><code><div>$TELEM$Q_w,Q_x,Q_y,Q_z,wx,wy,wz,ax,ay,az,hx,hy,hz,t_out,depth,v,mode,reg\r\n
-</div></code></code></pre>
-<h2 id="rov-command-line-interface-rov-cli">ROV Command Line Interface (rov-cli)</h2>
-<p>После перевода ПА в root-режим становится доступным интерфейс командной строки для управления системами ПА.
-Команды обязательно должны завершаться символами CRLF <code>\r\n</code></p>
-<p><strong>Список команд</strong></p>
-<ol>
-<li><code>exit</code> - выход из rov-cli</li>
-<li><code>motor &lt;ch&gt; &lt;value&gt;</code> - управление движителем (<code>&lt;ch&gt;</code> - канал, к которому подлкючен движитель 1...8, <code>&lt;value&gt;</code> - тяга в граммах -1800...1800)</li>
-<li><code>lamp &lt;ch&gt; &lt;value&gt;</code> - управление фонарём (<code>&lt;ch&gt;</code> - канал, к которому подлкючен фонарь 1...3, <code>&lt;value&gt;</code> - уровень яркости 0...100 %)</li>
-<li><code>grip &lt;value&gt;</code> - управление схватом (<code>&lt;value&gt;</code> - скорость сжатия -100...100, 0 - останов!)</li>
-<li><code>servo &lt;ch&gt; &lt;value&gt;</code> - управление сервоприводами подвеса (<code>&lt;ch&gt;</code> - канал сервопривода 1, 2, <code>&lt;value&gt;</code> - угол поворота 0...180 градусов)</li>
-<li><code>control coef get</code> - считывание текущих значений коэффициентов регулятора положения</li>
-<li><code>control coef set &lt;kwp&gt; &lt;kwi&gt;</code> - задание коэффициентов регулятора (<code>&lt;kwp&gt;</code> - коэф. ПИ-регулятора конутра угловой скорости (П), <code>&lt;kwi&gt;</code> - коэф. ПИ-регулятора конутра угловой скорости (И))</li>
-<li><code>get pos</code> - считывание ткущей позиции в углах Эйлера roll (крен), pitch (тангаж), yaw (курс)</li>
-</ol>
+<p><strong>PT</strong>. Заголовок пакета, содержащий тип пакета <code>[TYPE]</code> определяет для взаимодействующих уровней формат, структуру и содержание данных.</p>
+<p><strong>DATA BLOCK</strong>. Структура блока данных и содержание данных, а также символ разделителя для символьного формата (рекомендуется символ запятой <code>,</code>), определяется пользователем. Обработка, как и генерация блока данных, лежит на пользователе. Обработка данных, соответствущих заголовку, должна происходить в call-back функциях для каждого типа заголовка. Call-back функции вызываются по приему каждого пакета после его анализа встроенным конечным автоматом стека протокола.</p>
+<p><strong>CHECKSUM</strong>. Контрольная сумма пакета ставится в конце блока полезных данных после символа окончания данных <code>'*'</code>. Контрольная сумма представляет собой исключающее ИЛИ (XOR) всех байт между символом начала пакета <code>'$'</code> и символом окончания блока данных <code>'*'</code> (как в протоколе NMEA). Размер контрольной суммы - 1 байт. Байт контрольной суммы добавляется в пакет как есть, безе перевода его в символьный формат как это делается в протоколе NMEA. Например, имеем пакет <code>$FORCE$10,-20,30*0x54\r\n</code> (символьный формат блока данных), тогда контрольная сумма считется для строки <code>FORCE$10,-20,30</code>, которая в данном случае численно равна 0x54.</p>
 
+        <script async src="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.js"></script>
+        
     </body>
     </html>
