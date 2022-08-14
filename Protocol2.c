@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define DEBUG_PRINT
+//#define DEBUG_PRINT
 
 /**
  * Специальные символы пакетов
@@ -65,47 +65,36 @@ void Protocol2_Loop(Protocol2_Handle_t *prtcl2)
 
 /**
  * @brief Функция создания пакета в соответствии с правилами протокола.
- * @param pkg массив размезения пакета
+ * @param pkg массив для записи пакета
+ * @param pkg_length длина массива записи пакета в байтах
  * @param pt строка заголовка пакета
  * @param data полезные данные в произвольном формате
  * @param data_length размер полезных данных в байтах
  * @return размер созданного пакета в байтах. Если 0 - ошибка
  */
-size_t Protocol2_CreatePKG(Protocol2_Handle_t *prtcl2, uint8_t *pkg, uint8_t *pt, uint8_t *data, size_t data_length)
+size_t Protocol2_CreatePKG(Protocol2_Handle_t *prtcl2, uint8_t *pkg, size_t pkg_length, uint8_t *pt, uint8_t *data, size_t data_length)
 {
     size_t pkg_size = 0;
     size_t pt_length = strlen(pt);
 
-    if (data_length > (PRTCL2_DATA_MAX_LENGTH - 2) || pt_length > PRTCL2_PT_MAX_LENGTH || pt_length == 0)
+    /* Проверка размеров полея пакета */
+    if (data_length > (PRTCL2_DATA_MAX_LENGTH - PRTCL2_CS_LENGTH) || pt_length > PRTCL2_PT_MAX_LENGTH || pt_length == 0)
         return 0;
-
+    
     /**
      * Размер массива пакета должен вместить в себя все поля:
      * размер заголовка (pt)
      * размер блока данных (data_length)
      * служебные поля
      */
-    if (sizeof(pkg) >= (pt_length + data_length + PRTCL2_PKG_MIN_LENGTH))
+    if (pkg_length < (pt_length + data_length + PRTCL2_PKG_MIN_LENGTH))
         return 0;
 
-    /* Сборка заголовка пакета $pt$ */
-    sprintf((char *)pkg, "%c%s%c", PRTCL2_START_SYMBOL, pt, PRTCL2_PT_SYMBOL);
-    pkg_size = strlen(pkg);
-    /* создаем указатель на следующий после заголовка байт (туда и копируем блок данных) */
-    uint8_t *pkg_dst = pkg + pkg_size;
-    /* копируем блок данных. Получаем $pt$data */
-    memcpy(pkg_dst, data, data_length);
-    pkg_size += data_length;
-    /* Высиление контрольной суммы */
+    /* Вычисление контрольной суммы */
     uint8_t cs = CheckSumXOR(pt, PRTCL2_PT_SYMBOL, data, data_length);
-    pkg[pkg_size] = '*'; //символ окончания блока данных
-    pkg_size++;
-    pkg[pkg_size] = cs; // добавляем байт контрольной суммы
-    pkg_size++;
-    pkg[pkg_size] = '\r';
-    pkg_size++;
-    pkg[pkg_size] = '\n';
-    pkg_size++; // окончательный размер пакета
+
+    /* Сборка пакета */
+    pkg_size = sprintf((char *)pkg, "%c%s%c%s*%X\r\n", PRTCL2_START_SYMBOL, pt, PRTCL2_PT_SYMBOL, data, cs);
     
     return pkg_size;
 }
@@ -209,25 +198,33 @@ static void DL_Reception_Payload_State(Protocol2_Handle_t *prtcl2)
 /**
  * @brief Вычисление контрольной суммы пакета и сверка его с принятым.
  * Контрольная сумма содержится в одном массиве с блоком полезных данных
- * в самом его конце. Последние два байта массива блока полезных данных -
- * символ окончания блока данных '*' и байт коньольной суммы.
+ * в самом его конце. Последние три байта массива блока полезных данных -
+ * символ окончания блока данных '*' и два hex-символа байта контрольной суммы.
  * @param prtcl2 ссылка на структуру данных протокола Protocol2_Handle_t
  * @return None
  */
 static void DL_CheckSumState(Protocol2_Handle_t *prtcl2)
 {
+    char cs_symbol[3] = "\0";
     uint8_t checksum_pkg = 0;
+    uint8_t _checksum = 0;
 
-    if (prtcl2->dl.indx_msg >= 2) // хотя бы два байта - символ разделения '*' и байт cs
+    if (prtcl2->dl.indx_msg >= PRTCL2_CS_LENGTH) // обязательных три байта минимум - символ разделения '*' и символы байта cs
     {
-        prtcl2->dl.indx_msg--;                              // смещаемся на байт контрольной суммы
-        checksum_pkg = prtcl2->dl.msg[prtcl2->dl.indx_msg]; // читаем байт контрольной суммы
+        prtcl2->dl.indx_msg--;                              // смещаемся символ контрольной суммы
+        cs_symbol[1] = prtcl2->dl.msg[prtcl2->dl.indx_msg]; // читаем hex-символ младших бит байта контрольной суммы
+        prtcl2->dl.msg[prtcl2->dl.indx_msg] = '\0';         // очищаем байт
+        prtcl2->dl.indx_msg--;                              // смещаемся на следующий символ
+        cs_symbol[0] = prtcl2->dl.msg[prtcl2->dl.indx_msg]; // читаем hex-символ старших бит байта контрольной суммы
         prtcl2->dl.msg[prtcl2->dl.indx_msg] = '\0';         // очищаем байт
         prtcl2->dl.indx_msg--;                              // смещаемся на байт символа разделения чтобы получить длину блока данных
-        prtcl2->dl.msg[prtcl2->dl.indx_msg] = '\0';         // очищаем байт. Теперь в массиве блока данных нет лишних байтов
+        prtcl2->dl.msg[prtcl2->dl.indx_msg] = '\0';         // очищаем байт. Теперь в массиве блока данных нет лишних символов
+
+        /* Парсинг контрольной суммы */
+        checksum_pkg = (uint8_t)strtol(cs_symbol, NULL, 16);
 
         /* Сверка контрольной суммы */
-        uint8_t _checksum = CheckSumXOR(prtcl2->dl.pt, PRTCL2_PT_SYMBOL, prtcl2->dl.msg, prtcl2->dl.indx_msg);
+        _checksum = CheckSumXOR(prtcl2->dl.pt, PRTCL2_PT_SYMBOL, prtcl2->dl.msg, prtcl2->dl.indx_msg);
         if (_checksum == checksum_pkg) // checksum OK
         {
 #ifdef DEBUG_PRINT

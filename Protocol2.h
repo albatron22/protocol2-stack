@@ -12,14 +12,16 @@ extern "C"
 
 #define PRTCL2_PT_MAX_LENGTH 32
 #define PRTCL2_DATA_MAX_LENGTH 512
+/* Длина поля контрольной суммы */
+#define PRTCL2_CS_LENGTH 3
 /**
  * Минимальный пакет содержит в себе только служебные поля (без заголовка и блока данных)
  * 1 байт символа начала пакета + 1 байт окончания заголовка +
- * 1 байт окончания блока данннх + 1 байт контрольной суммы +
+ * 1 байт окончания блока данннх + 2 символа байта контрольной суммы +
  * 2 байта окончания пакета CR LF.
- * Итого 6 служебных байт
+ * Итого 7 служебных байт
  */
-#define PRTCL2_PKG_MIN_LENGTH 6
+#define PRTCL2_PKG_MIN_LENGTH (4 + PRTCL2_CS_LENGTH)
 
     typedef struct Protocol2_Package_Struct
     {
@@ -79,7 +81,7 @@ extern "C"
 
     void Protocol2_Init(Protocol2_Handle_t *prtcl2);
     void Protocol2_Loop(Protocol2_Handle_t *prtcl2);
-    size_t Protocol2_CreatePKG(Protocol2_Handle_t *prtcl2, uint8_t *pkg, uint8_t *pt, uint8_t *data, size_t data_length);
+    size_t Protocol2_CreatePKG(Protocol2_Handle_t *prtcl2, uint8_t *pkg, size_t pkg_length, uint8_t *pt, uint8_t *data, size_t data_length);
 
 #ifdef __cplusplus
 }
