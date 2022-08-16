@@ -68,15 +68,7 @@ extern "C"
         size_t (*VPortAvailable)(); // возвращает количество доступных байт для чтения
         uint8_t (*VPortRead)();     // чтение одного байта
         void (*VPortClean)();       // очистка содержимого приёмного буфера порта
-
-        /**
-         * @brief Отправка массива байт данных в порт
-         * @param pkg массив данных для отправки (массив должен быть глобальным)
-         * @return Статус отправки: 0 - OK, 1 - NOK (busy or error)
-         */
-        int (*VPortSendData)(uint8_t *pkg); //
-
-        uint32_t (*VGetTick_ms)(); // системное время, мс
+        uint32_t (*VGetTick_ms)();  // системное время, мс
     } Protocol2_Handle_t;
 
     void Protocol2_Init(Protocol2_Handle_t *prtcl2);
