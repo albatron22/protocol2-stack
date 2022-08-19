@@ -14,9 +14,6 @@ const char PRTCL2_CS_SYMBOL = '*';    // символ окончания бло�
 const char PRTCL2_END_PKG_CR = '\r';  // первый символ окончания пакета <CR>
 const char PRTCL2_END_PKG_LF = '\n';  // второй символ окончания пакета <LF>
 
-uint8_t pkg[512] = {0};
-bool dataIsSent = false;
-
 static void DL_Reset(Protocol2_Handle_t *prtcl2);
 static void DL_IdleState(Protocol2_Handle_t *prtcl2);
 static void DL_Reception_PT_State(Protocol2_Handle_t *prtcl2);
